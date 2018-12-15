@@ -1,0 +1,17 @@
+class Store
+types
+public string = seq of char;
+values
+-- TODO Define values here
+instance variables
+private name : string;
+private description : string;
+private estimateTime : string;
+private deliveryCost : real;
+operations
+-- TODO Define operations here
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Store

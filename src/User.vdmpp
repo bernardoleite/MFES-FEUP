@@ -1,0 +1,19 @@
+class User is subclass of Person
+types
+public string = seq of char;
+public Address :: address : string
+									street : string
+								  zip_code: string
+							 	  country : string;						 	  
+values
+-- TODO Define values here
+instance variables
+private email : string;
+private address: Address;
+operations
+-- TODO Define operations here
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end User

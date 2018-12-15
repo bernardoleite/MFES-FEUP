@@ -1,0 +1,19 @@
+class Person
+types
+public string = seq of char;
+public Gender = <Male> | <Female>;	
+values
+-- TODO Define values here
+instance variables
+private name : string;
+private gender: Gender;
+private age : nat;
+operations
+public Person(na: string, ge: Gender, ag: nat) p : Person ==
+(p := self; name := na; gender := ge; age:=ag;return self)
+
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Person

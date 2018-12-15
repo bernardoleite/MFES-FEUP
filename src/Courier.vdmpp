@@ -1,0 +1,15 @@
+class Courier is subclass of Person
+types
+public string = seq of char;
+values
+-- TODO Define values here
+instance variables
+private cardID : string;
+private salary : real;
+operations
+-- TODO Define operations here
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Courier
