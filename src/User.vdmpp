@@ -10,6 +10,7 @@ values
 instance variables
 private email : string;
 private address: Address;
+
 operations
 -- TODO Define operations here
 functions

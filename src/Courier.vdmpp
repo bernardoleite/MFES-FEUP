@@ -5,9 +5,13 @@ values
 -- TODO Define values here
 instance variables
 private cardID : string;
-private salary : real;
+private salary : rat;
+inv salary > 0;
+
 operations
--- TODO Define operations here
+public Courier(id: string, sal: rat) c : Courier==
+(c := self; cardID := id; salary:= sal; return self)
+
 functions
 -- TODO Define functiones here
 traces

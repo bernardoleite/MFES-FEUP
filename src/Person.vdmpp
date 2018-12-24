@@ -8,12 +8,24 @@ instance variables
 private name : string;
 private gender: Gender;
 private age : nat;
-operations
-public Person(na: string, ge: Gender, ag: nat) p : Person ==
-(p := self; name := na; gender := ge; age:=ag;return self)
 
+operations
+public Person: string * Gender * nat ==> Person
+Person(na, ge, ag) == (name := na; gender := ge; age:=ag;return self)
+pre ag > 18
+post self.age = ag;
+ 
 functions
 -- TODO Define functiones here
 traces
 -- TODO Define Combinatorial Test Traces here
 end Person
+
+-- Example: create p := new Person(['T','e','s','t','e'], <Female>, 24)
+
+-- Template operation: int fun(int A, string B) {int c = 0; return c; }
+-- public fun: int * string ==> ReturnType
+-- fun(A,B) == ( c:= 0; return c)
+-- pre RIP -> restriction on argument values and instance variables, to check the call
+-- post RIP2 -> restriction on the values of the arguments, result, baseline and final vars (“~”, Tilde) instance, to check on return
+
