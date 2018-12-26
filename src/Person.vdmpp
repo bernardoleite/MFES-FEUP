@@ -5,23 +5,21 @@ public Gender = <Male> | <Female>;
 values
 -- TODO Define values here
 instance variables
-private name : string;
-private gender: Gender;
-private age : nat;
+protected name : string;
+protected gender: Gender;
+protected age : nat;
 
 operations
-public Person: string * Gender * nat ==> Person
-Person(na, ge, ag) == (name := na; gender := ge; age:=ag;return self)
+public setPersonInfo: string * Gender * nat ==> ()
+setPersonInfo(na, ge, ag) == is subclass responsibility
 pre ag > 18
 post self.age = ag;
- 
 functions
 -- TODO Define functiones here
 traces
 -- TODO Define Combinatorial Test Traces here
 end Person
 
--- Example: create p := new Person(['T','e','s','t','e'], <Female>, 24)
 
 -- Template operation: int fun(int A, string B) {int c = 0; return c; }
 -- public fun: int * string ==> ReturnType

@@ -6,15 +6,20 @@ public Address :: address : string
 								  zip_code: string
 							 	  country : string;						 	  
 values
--- TODO Define values here
 instance variables
 private email : string;
 private address: Address;
 
 operations
--- TODO Define operations here
+public User: string * User`Address ==> User
+User(em, addr) == (email:=em; address:=addr; return self);
+
+public setPersonInfo: string * Gender * nat ==> ()
+setPersonInfo(na, ge, ag) == (name := na; gender := ge; age:=ag;);
 functions
 -- TODO Define functiones here
 traces
 -- TODO Define Combinatorial Test Traces here
 end User
+
+-- Example: create p := new User("Teste", mk_Address("as","as","as","as"))

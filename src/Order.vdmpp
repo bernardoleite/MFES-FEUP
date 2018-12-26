@@ -10,7 +10,8 @@ private courier : [Courier];
 private user : [User];
 
 operations
--- TODO Define operations here
+public getTotalCost: () ==> real
+getTotalCost() == (return totalCost)
 functions
 -- TODO Define functiones here
 traces

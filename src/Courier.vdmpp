@@ -9,9 +9,8 @@ private salary : rat;
 inv salary > 0;
 
 operations
-public Courier(id: string, sal: rat) c : Courier==
-(c := self; cardID := id; salary:= sal; return self)
-
+public setPersonInfo: string * Gender * nat ==> ()
+setPersonInfo(na, ge, ag) == (name := na; gender := ge; age:=ag;);
 functions
 -- TODO Define functiones here
 traces
