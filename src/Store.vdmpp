@@ -16,7 +16,6 @@ public Store: string * string * string * real ==> Store
 Store(na, des, time, cost) == (name := na; description := des; estimateTime:=time; deliveryCost := cost; return self)
 pre cost > 0
 post self.deliveryCost = cost;
-
 public getName: () ==> string
 getName() == return name;
 
@@ -30,7 +29,5 @@ public getDeliveryCost: () ==> real
 getDeliveryCost() == return deliveryCost;
 
 functions
--- TODO Define functiones here
-traces
 -- TODO Define Combinatorial Test Traces here
 end Store

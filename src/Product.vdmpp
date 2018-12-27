@@ -15,7 +15,6 @@ inv price > 0;
 operations
 public Product: string * real * string * string ==> Product
 Product(na, pri, des, cat) == (name := na; price := pri; description:=des; category := cat; return self)
-pre pri > 0;
 
 public getName: () ==> string
 getName() == return name;
@@ -29,7 +28,3 @@ getDescription() == return description;
 public getCategory: () ==> string
 getCategory() == return category;
 functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
-end Product
