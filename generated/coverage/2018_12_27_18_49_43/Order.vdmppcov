@@ -1,0 +1,19 @@
+class Order
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+private totalCost : real;
+private products : set of Product;
+private courier : [Courier];
+private user : [User];
+
+operations
+public getTotalCost: () ==> real
+getTotalCost() == (return totalCost)
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Order

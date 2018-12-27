@@ -17,9 +17,6 @@ getUser1() == return user1;
 
 public getStore1: () ==> Store
 getStore1() == return store1;
-
-public getProduct1: () ==> Product
-getProduct1() == return product1;
  
 functions
 -- TODO Define functiones here
@@ -31,4 +28,3 @@ end Execution
 -- create t := new Execution()
 -- print t.getUser1().setPersonInfo("Teste", <Male>, 20)
 -- print t.getUser1()
--- print t.getStore1().addProduct(t.getProduct1())

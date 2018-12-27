@@ -31,4 +31,3 @@ end Execution
 -- create t := new Execution()
 -- print t.getUser1().setPersonInfo("Teste", <Male>, 20)
 -- print t.getUser1()
--- print t.getStore1().addProduct(t.getProduct1())
