@@ -14,15 +14,6 @@ public setPersonInfo: string * Gender * nat ==> ()
 setPersonInfo(na, ge, ag) == is subclass responsibility
 pre ag > 18
 post self.age = ag;
-
-public getName: () ==> string
-getName() == return name;
-
-public getGender: () ==> Gender
-getGender() == return gender;
-
-public getAge: () ==> nat
-getAge() == return age;
 functions
 -- TODO Define functiones here
 traces
@@ -34,5 +25,5 @@ end Person
 -- public fun: int * string ==> ReturnType
 -- fun(A,B) == ( c:= 0; return c)
 -- pre RIP -> restriction on argument values and instance variables, to check the call
--- post RIP2 -> restriction on the values of the arguments, result, baseline and final vars (ï¿½~ï¿½, Tilde) instance, to check on return
+-- post RIP2 -> restriction on the values of the arguments, result, baseline and final vars (“~”, Tilde) instance, to check on return
 

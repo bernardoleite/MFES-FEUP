@@ -14,12 +14,6 @@ operations
 public User: string * User`Address ==> User
 User(em, addr) == (email:=em; address:=addr; return self);
 
-public getEmail: () ==> string
-getEmail() == return email;
-
-public getAddress: () ==> Address
-getAddress() == return address;
-
 public setPersonInfo: string * Gender * nat ==> ()
 setPersonInfo(na, ge, ag) == (name := na; gender := ge; age:=ag;);
 functions

@@ -5,13 +5,9 @@ values
 address1 : User`Address = mk_User`Address("as","as","as","as");
 instance variables
 user1 : User := new User("test@hotmail.com", address1);
-store1: Store := new Store("store1", "description of store", "10-15min", 1.5);
 operations
 public getUser1: () ==> User
 getUser1() == return user1;
-
-public getStore1: () ==> Store
-getStore1() == return store1;
 functions
 -- TODO Define functiones here
 traces
@@ -20,5 +16,4 @@ end Execution
 
 
 -- create t := new Execution()
--- print t.getUser1().setPersonInfo("Teste", <Male>, 20)
 -- print t.getUser1()
