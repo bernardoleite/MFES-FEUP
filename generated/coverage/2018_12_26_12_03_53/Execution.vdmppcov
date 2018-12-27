@@ -1,0 +1,15 @@
+class Execution
+types
+-- TODO Define types here
+values
+instance variables
+address1 : User`Address := mk_User`Address("as","as","as","as");
+user1 : User := new User("test@hotmail.com", address1);
+operations
+public getUser1: () ==> User
+getUser1() == return user1;
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Execution
