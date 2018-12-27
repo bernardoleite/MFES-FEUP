@@ -2,16 +2,40 @@ class Execution
 
 types
 public string = seq of char;
+
 values
 address1 : User`Address = mk_User`Address("as","as","as","as");
 
-
 instance variables
+private stores: seq of Store;
+private products: seq of Product;
+private couriers: seq of Courier;
+private users: seq of User;
+private orders: seq of Order;
+
+-- Users
 user1 : User := new User("test@hotmail.com", address1);
-store1: Store := new Store("store1", "description of store", "10-15min", 1.5);
-product1 : Product := new Product("Rabanada", 2.5, "Rabanada de Convento", "Doce");
+
+-- Products
+prod1A : Product := new Product("Rabanada", 2.5, "Rabanada de Convento", "Doce", 5);
+prod2A : Product := new Product("Bolina", 1.5, "Docinho de Bolina", "Doce", 10);
+prod3A : Product := new Product("Bolo Rei", 3.99, "Bolo Rei sem frutos", "Doce", 6);
+prodsA : seq of Product := [prod1A,prod2A,prod3A];
+
+-- Stores
+store1: Store := new Store("store1", "description of store", "10-15min", 1.5, prodsA);
 
 operations
+
+public Execution: () ==> Execution
+Execution() == (
+stores := []; products := []; couriers := []; users := []; orders := []; 
+stores := stores ^ [store1];
+products := products ^ [prod1A, prod2A, prod3A];
+users := users ^ [user1]; 
+return self
+);
+
 public getUser1: () ==> User
 getUser1() == return user1;
 
@@ -20,6 +44,12 @@ getStore1() == return store1;
 
 public getProduct1: () ==> Product
 getProduct1() == return product1;
+
+public populateDB: () ==> nat
+populateDB() == (
+
+return 1;
+);
  
 functions
 -- TODO Define functiones here

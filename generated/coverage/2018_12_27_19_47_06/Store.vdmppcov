@@ -13,8 +13,8 @@ private products : seq of Product;
 inv '-' in set elems estimateTime;
 
 operations
-public Store: string * string * string * real * seq of Product ==> Store
-Store(na, des, time, cost, prods) == (name := na; description := des; estimateTime:=time; deliveryCost := cost; products := prods; return self)
+public Store: string * string * string * real ==> Store
+Store(na, des, time, cost) == (name := na; description := des; estimateTime:=time; deliveryCost := cost; products := []; return self)
 pre cost > 0
 post self.deliveryCost = cost;
 public getName: () ==> string
@@ -34,6 +34,14 @@ addProduct(p) == (
 products := products ^ [p];
 return len products;
 );
+
+public removeProduct: Product ==> nat
+removeProduct(p) == (
+products := tl products;
+return len products;
+)
+
+
 
 functions
 -- TODO Define Combinatorial Test Traces here
