@@ -15,19 +15,8 @@ inv price > 0;
 operations
 public Product: string * real * string * string ==> Product
 Product(na, pri, des, cat) == (name := na; price := pri; description:=des; category := cat; return self)
-pre pri > 0;
-
-public getName: () ==> string
-getName() == return name;
-
-public getPrice: () ==> real
-getPrice() == return price;
-
-public getDescription: () ==> string
-getDescription() == return description;
-
-public getCategory: () ==> string
-getCategory() == return category;
+--pre cost > 0
+--post self.deliveryCost = cost;
 functions
 -- TODO Define functiones here
 traces
