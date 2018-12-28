@@ -1,0 +1,38 @@
+class Person
+types
+public string = seq of char;
+public Gender = <Male> | <Female>;	
+values
+-- TODO Define values here
+instance variables
+protected name : string;
+protected gender: Gender;
+protected age : nat;
+
+operations
+public setPersonInfo: string * Gender * nat ==> ()
+setPersonInfo(na, ge, ag) == is subclass responsibility
+pre ag > 18
+post self.age = ag;
+
+public getName: () ==> string
+getName() == return name;
+
+public getGender: () ==> Gender
+getGender() == return gender;
+
+public getAge: () ==> nat
+getAge() == return age;
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Person
+
+
+-- Template operation: int fun(int A, string B) {int c = 0; return c; }
+-- public fun: int * string ==> ReturnType
+-- fun(A,B) == ( c:= 0; return c)
+-- pre RIP -> restriction on argument values and instance variables, to check the call
+-- post RIP2 -> restriction on the values of the arguments, result, baseline and final vars (�~�, Tilde) instance, to check on return
+
