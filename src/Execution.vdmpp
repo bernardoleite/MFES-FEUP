@@ -10,7 +10,6 @@ instance variables
 private stores: seq of Store;
 private products: seq of Product;
 private couriers: seq of Courier;
-private users: seq of User;
 private orders: seq of Order;
 
 -- Users
@@ -20,7 +19,8 @@ user1 : User := new User("test@hotmail.com", address1);
 prod1A : Product := new Product("Rabanada", 2.5, "Rabanada de Convento", "Doce", 5);
 prod2A : Product := new Product("Bolina", 1.5, "Docinho de Bolina", "Doce", 10);
 prod3A : Product := new Product("Bolo Rei", 3.99, "Bolo Rei sem frutos", "Doce", 6);
-prodsA : seq of Product := [prod1A,prod2A,prod3A];
+prodsA : seq of Product := [prod2A,prod3A];
+ users : seq of User := [user1];
 
 -- Stores
 store1: Store := new Store("store1", "description of store", "10-15min", 1.5, prodsA);
@@ -35,6 +35,9 @@ products := products ^ [prod1A, prod2A, prod3A];
 users := users ^ [user1]; 
 return self
 );
+
+public getUsers: () ==> seq of User
+getUsers() == return users;
 
 public getUser1: () ==> User
 getUser1() == return user1;

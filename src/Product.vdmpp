@@ -18,32 +18,48 @@ public Product: string * real * string * string * nat ==> Product
 Product(na, pri, des, cat, qty) == (name := na; price := pri; description:=des; category := cat; quantity := qty; return self);
 
 public getName: () ==> string
-getName() == return name;
+getName() == return name
+post RESULT = name;
 
 public getPrice: () ==> real
-getPrice() == return price;
+getPrice() == return price
+post RESULT = price;
 
 public getDescription: () ==> string
-getDescription() == return description;
+getDescription() == return description
+post RESULT = description;
 
 public getCategory: () ==> string
-getCategory() == return category;
+getCategory() == return category
+post RESULT = category;
 
 public getStock: () ==> nat
-getStock() == return quantity;
+getStock() == return quantity
+post RESULT = quantity;
 
 public addStock: nat ==> nat
 addStock(numberUnits) == (
 quantity := quantity + numberUnits;
 return quantity;
-);
+)
+pre numberUnits > 0
+post RESULT = quantity;
 
 public removeStock: nat ==> nat
 removeStock(numberUnits) == (
 quantity := quantity - numberUnits;
 return quantity;
-);
+)
+pre numberUnits > 0
+post RESULT = quantity;
 
+public setStore: Store ==> ()
+setStore(sto) == store := sto
+pre sto <> store; 
+
+public getStore: () ==> Store
+getStore() == return store
+post RESULT = store;
 
 functions
 

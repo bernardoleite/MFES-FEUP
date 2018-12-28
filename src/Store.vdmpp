@@ -17,24 +17,32 @@ public Store: string * string * string * real * seq of Product ==> Store
 Store(na, des, time, cost, prods) == (name := na; description := des; estimateTime:=time; deliveryCost := cost; products := prods; return self)
 pre cost > 0
 post self.deliveryCost = cost;
+
 public getName: () ==> string
-getName() == return name;
+getName() == return name
+post RESULT = name;
 
 public getDescription: () ==> string
-getDescription() == return description;
+getDescription() == return description
+post RESULT = description;
 
 public getEstimateTime: () ==> string
-getEstimateTime() == return estimateTime;
+getEstimateTime() == return estimateTime
+post RESULT = estimateTime;
 
 public getDeliveryCost: () ==> real
-getDeliveryCost() == return deliveryCost;
+getDeliveryCost() == return deliveryCost
+post RESULT = deliveryCost;
 
 public addProduct: Product ==> nat
 addProduct(p) == (
 products := products ^ [p];
+p.setStore(self);
+-- o produto adicionado fica com p.store = self;
 return len products;
-);
-
+)
+pre p not in set elems products
+post p in set elems products;
 functions
 -- TODO Define Combinatorial Test Traces here
 end Store
