@@ -1,0 +1,37 @@
+class Order
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+private identifier:  nat;
+private totalCost : real;
+private products : seq of Product;
+private courier : [Courier];
+private user : [User];
+
+operations
+public Order: nat * seq of Product * Courier * User ==> Order
+Order(id, prods, cour, use) == (identifier:=id; products := prods; courier := cour; user:=use; return self);
+
+
+public getId: () ==> nat
+getId() == return identifier;
+
+public getTotalCost: () ==> real
+getTotalCost() == return totalCost;
+
+public getProducts: () ==> seq of Product
+getProducts() == return products;
+
+public getCourier: () ==> Courier
+getCourier() == return courier;
+
+public getUser: () ==> User
+getUser() == return user;
+
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Order
