@@ -4,14 +4,32 @@ types
 values
 -- TODO Define values here
 instance variables
+private identifier:  nat;
 private totalCost : real;
-private products : set of Product;
+private products : seq of Product;
 private courier : [Courier];
 private user : [User];
 
 operations
+public Order: nat * seq of Product * Courier * User ==> Order
+Order(id, prods, cour, use) == (identifier:=id; products := prods; courier := cour; user:=use; return self);
+
+
+public getId: () ==> nat
+getId() == return identifier;
+
 public getTotalCost: () ==> real
-getTotalCost() == (return totalCost)
+getTotalCost() == return totalCost;
+
+public getProducts: () ==> seq of Product
+getProducts() == return products;
+
+public getCourier: () ==> Courier
+getCourier() == return courier;
+
+public getUser: () ==> User
+getUser() == return user;
+
 functions
 -- TODO Define functiones here
 traces
