@@ -1,0 +1,50 @@
+class Product
+types
+public string = seq of char;
+values
+-- TODO Define values here
+instance variables
+private name : string;
+private price : real;
+private description : string;
+private category : string;
+private quantity: nat;
+private store : [Store];
+private orders : set of Order;
+inv price > 0;
+
+operations
+public Product: string * real * string * string * nat ==> Product
+Product(na, pri, des, cat, qty) == (name := na; price := pri; description:=des; category := cat; quantity := qty; return self);
+
+public getName: () ==> string
+getName() == return name;
+
+public getPrice: () ==> real
+getPrice() == return price;
+
+public getDescription: () ==> string
+getDescription() == return description;
+
+public getCategory: () ==> string
+getCategory() == return category;
+
+public getStock: () ==> nat
+getStock() == return quantity;
+
+public addStock: nat ==> nat
+addStock(numberUnits) == (
+quantity := quantity + numberUnits;
+return quantity;
+);
+
+public removeStock: nat ==> nat
+removeStock(numberUnits) == (
+quantity := quantity - numberUnits;
+return quantity;
+);
+
+
+functions
+
+end Product
