@@ -87,7 +87,6 @@ for store in stores do
  	for order in orders do 
 	if order.getId() = orderId then
 		(
-		 IO`println(newProd.getName());
 		if order.getUser().getEmail() = email then (order.addProduct(newProd));
 		return 1;
 		)  else return -1;
@@ -131,7 +130,7 @@ end Execution
 
 -- create t := new Execution()
 -- print t.createOrder("bernas@hotmail.com")
--- print t.addProductToOrder("bernas@hotmail.com",9381,"store1",1)
+-- print t.addProductToOrder("bernas@hotmail.com",VER ORDER ID,"store1",1)
 -- print t.getUser1().setPersonInfo("Teste", <Male>, 20)
 -- print t.getUser1()
 -- print t.getStore1().addProduct(t.getProduct1())
