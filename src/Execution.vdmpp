@@ -143,7 +143,7 @@ return newProd;
 
 public addProductToOrder: string * int * string * int * nat ==> string
 addProductToOrder(email, orderId, storeName, productIndex, numberUnits) == (
-for store in stores do
+for store in stores do (
  if store.getName() = storeName then 
  (
  	dcl auxRet : int ;
@@ -151,31 +151,34 @@ for store in stores do
  	dcl newProd : Product := cloneProd(refProd, numberUnits);
  	-- remove numberUnits from Product Store
  	dcl newStock : nat := refProd.removeStock(numberUnits);
- 	for order in orders do 
-	if order.getId() = orderId then
-		(
-		if order.getUser().getEmail() = email then (auxRet := order.addProduct(newProd););
-		IO`println("Product(s) added. Current Order:"); 
-		for prod in order.getProducts() do (IO`print(prod.getName() ^ ". Quantity: "); IO`println(prod.getStock())); 
-		return "success";
-		)  else return "error";
- )
-	else return "error";
+ 	for order in orders do (
+		if order.getId() = orderId then
+			(
+			if order.getUser().getEmail() = email then (auxRet := order.addProduct(newProd););
+			IO`println("Product(s) added. Current Order:"); 
+			for prod in order.getProducts() do (IO`print(prod.getName() ^ ". Quantity: "); IO`println(prod.getStock())); 
+			return "success";
+			)  
+		);
+ ) );
+	return "error";
 );
 
 public concludeOrder: string * int ==> string
 concludeOrder(email, orderId) == (
-for order in orders do 
-	if order.getId() = orderId then
-		(
-		dcl auxRet : int ;
-		if order.getUser().getEmail() = email then (auxRet := order.finishOrder());
-		IO`println("Order Concluded. Bill:"); 
-		for prod in order.getProducts() do (IO`print(prod.getName() ^ ". Quantity: "); IO`print(prod.getStock()); IO`print(" Unit Price: "); IO`println(prod.getPrice()));
-		IO`print("Total: "); IO`println(order.getTotalCost()); 
-		return "success";
-		)
-	else return "error";
+for order in orders do (
+		if order.getId() = orderId then
+			(
+			dcl auxRet : int ;
+			if order.getUser().getEmail() = email then (auxRet := order.finishOrder());
+			IO`println("Order Concluded. Bill:"); 
+			for prod in order.getProducts() do (IO`print(prod.getName() ^ ". Quantity: "); IO`print(prod.getStock()); IO`print(" Unit Price: "); IO`println(prod.getPrice()));
+			IO`print("Total: "); IO`println(order.getTotalCost()); 
+			return "success";
+			)
+		);
+
+	return "error";
 );
 
 public populateDB: () ==> nat
