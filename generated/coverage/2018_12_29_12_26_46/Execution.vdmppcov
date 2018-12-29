@@ -3,6 +3,7 @@ class Execution
 types
 public string = seq of char;
 public Category = <Pizza> | <SnacksDrinks> | <Candies> | <Pharmacy> | <Sushi>;
+public State = <INIT> | <ORDER_CONCLUDED> | <DELIVERED> ;
 
 values
 address1 : User`Address = mk_User`Address("as","as","as","as");
@@ -88,7 +89,7 @@ addProductToOrder(email, orderId, storeName, productIndex, numberUnits) == (
 for store in stores do
  if store.getName() = storeName then 
  (
- 	dcl auxRet : int ;
+ 	dcl aux : int ;
  	dcl refProd : Product := store.getProduct(productIndex); 
  	dcl newProd : Product := cloneProd(refProd, numberUnits);
  	-- remove numberUnits from Product Store
@@ -96,7 +97,7 @@ for store in stores do
  	for order in orders do 
 	if order.getId() = orderId then
 		(
-		if order.getUser().getEmail() = email then (auxRet := order.addProduct(newProd););
+		if order.getUser().getEmail() = email then (aux := order.addProduct(newProd););
 		IO`println("Product(s) added. Current Order:"); 
 		for prod in order.getProducts() do (IO`print(prod.getName() ^ ". Quantity: "); IO`println(prod.getStock())); 
 		return "success";
@@ -105,19 +106,15 @@ for store in stores do
 	else return "error";
 );
 
-public concludeOrder: string * int ==> string
+public concludeOrder: string * int ==> int
 concludeOrder(email, orderId) == (
 for order in orders do 
 	if order.getId() = orderId then
 		(
-		dcl auxRet : int ;
-		if order.getUser().getEmail() = email then (auxRet := order.finishOrder());
-		IO`println("Order Concluded. Bill:"); 
-		for prod in order.getProducts() do (IO`print(prod.getName() ^ ". Quantity: "); IO`print(prod.getStock()); IO`print(" Unit Price: "); IO`println(prod.getPrice()));
-		IO`print("Total: "); IO`println(order.getTotalCost()); 
-		return "success";
+		if order.getUser().getEmail() = email then (order.finishOrder());
+		return 1;
 		)
-	else return "error";
+	else return -1;
 );
 
 public populateDB: () ==> nat
@@ -155,8 +152,7 @@ end Execution
 
 -- create t := new Execution()
 -- print t.createOrder("bernas@hotmail.com")
--- print t.addProductToOrder("bernas@hotmail.com",1000,"store1",1,1)
--- print t.concludeOrder("bernas@hotmail.com",1000)
+-- print t.addProductToOrder("bernas@hotmail.com",VER ORDER ID,"store1",1,1)
 -- print t.getUser1().setPersonInfo("Teste", <Male>, 20)
 -- print t.getUser1()
 -- print t.getStore1().addProduct(t.getProduct1())

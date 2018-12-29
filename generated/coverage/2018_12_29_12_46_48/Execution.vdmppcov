@@ -3,6 +3,7 @@ class Execution
 types
 public string = seq of char;
 public Category = <Pizza> | <SnacksDrinks> | <Candies> | <Pharmacy> | <Sushi>;
+public State = <INIT> | <ORDER_CONCLUDED> | <DELIVERED> ;
 
 values
 address1 : User`Address = mk_User`Address("as","as","as","as");
