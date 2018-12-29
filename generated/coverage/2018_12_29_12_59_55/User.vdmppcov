@@ -1,0 +1,38 @@
+class User is subclass of Person
+types
+public string = seq of char;
+public Address :: address : string
+									street : string
+								  zip_code: string
+							 	  country : string
+	--inv '-' in Address.zip-code;
+				 	  
+values
+instance variables
+private email : string;
+private address: Address;
+
+operations
+public User: string * User`Address ==> User
+User(em, addr) == (email:=em; address:=addr; return self);
+--pre forall p in set Execution`getUsers() & em <> p.email;
+
+public setEmail: string ==> string
+setEmail(newEmail) == (email:=newEmail; return email;);
+
+public getEmail: () ==> string
+getEmail() == return email
+post RESULT = email;
+
+public getAddress: () ==> Address
+getAddress() == return address
+post RESULT = address;
+
+public setPersonInfo: string * Gender * nat ==> ()
+setPersonInfo(na, ge, ag) == (name := na; gender := ge; age:=ag;);
+
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end User

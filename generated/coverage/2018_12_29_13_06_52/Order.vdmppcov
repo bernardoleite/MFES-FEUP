@@ -28,9 +28,10 @@ addProduct(newProd) == (
 dcl auxRet : nat ;
 for prod in products do 
 (
-if prod.getName() = newProd.getName()  then (auxRet:=prod.addStock(newProd.getStock()); return 1;) 
+if prod.getName() = newProd.getName() 
+then (auxRet:=prod.addStock(newProd.getStock());) 
+else products := products ^ [newProd];
 );
-products := products ^ [newProd];
 return 1;
 );
 

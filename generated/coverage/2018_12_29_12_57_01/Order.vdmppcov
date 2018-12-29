@@ -25,12 +25,11 @@ return self
 
 public addProduct: Product ==> int
 addProduct(newProd) == (
-dcl auxRet : nat ;
 for prod in products do 
-(
-if prod.getName() = newProd.getName()  then (auxRet:=prod.addStock(newProd.getStock()); return 1;) 
-);
-products := products ^ [newProd];
+	(
+	if prod.getName() = newProd.getName() then prod.addStock(newProd.getStock())
+	else products := products ^ [newProd];
+	); 
 return 1;
 );
 
