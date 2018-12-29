@@ -14,14 +14,11 @@ private stores: seq of Store;
 private products: seq of Product;
 private couriers: seq of Courier;
 private orders: seq of Order;
-private refOrders: map int to int;
-private users: seq of User;
 
 -- Users
-user0 : User := new User("blankuser", address1);
 user1 : User := new User("bernas@hotmail.com", address1);
 user2 : User := new User("vitorino@hotmail.com", address2);
-
+users : seq of User := [user1,user2];
 
 -- Couriers
 courier1 : Courier := new Courier("maria@glovo.com", 800);
@@ -51,9 +48,8 @@ Execution() == (
 stores := []; products := []; couriers := []; users := []; orders := []; 
 stores := stores ^ [store1,store2];
 products := products ^ [prod1A, prod2A, prod3A];
+users := users ^ [user1]; 
 couriers := couriers ^ [courier1]; 
-refOrders := {0 |-> -1 };
-users := users ^ [user1,user2];
 return self
 );
 
@@ -69,8 +65,7 @@ IO`print("Order: "); IO`println(orderID);
 IO`println("Order State: DELIVERED"); 
 IO`println("By Courier: " ^ courierID); 
 return "success";
-)
-pre (orderID in set dom refOrders);
+);
 
 public assignCourier: string * int ==> string
 assignCourier(courierID, orderID) == (
@@ -99,40 +94,26 @@ getCouriers() == return couriers;
 public getOrders: () ==> seq of Order
 getOrders() == return orders;
 
-public getrefOrders: () ==> map int to int
-getrefOrders() == (
-return refOrders;
-);
-
 public listCouriers: () ==> string
 listCouriers() == 
 (
 for courier in couriers do (IO`println("Courier ID: " ^ courier.getcardID()););
 return "success";
 );
-
-public listUsers: () ==> string
-listUsers() == 
-(
-for user in users do (IO`println("User Email: " ^ user.getEmail()););
-return "success";
-);
  
 public createOrder: string ==> string
 createOrder(email) == (
-for user in users do (
-		if user.getEmail() = email then
-			(
-			dcl newOrder : Order := new Order(user);
-			orders := orders ^ [newOrder]; 
-			refOrders := refOrders ++ {newOrder.getId() |-> len orders - 1};
-			IO`println("New Order for " ^ user.getEmail()); 
-			IO`print("Order ID "); IO`println(newOrder.getId()); 
-			IO`println("Please add Products");
-			return "success";
-			) 
-		);
-	return "User doesn't exist.";
+for user in users do 
+	if user.getEmail() = email then
+		(
+		dcl newOrder : Order := new Order(user);
+		orders := orders ^ [newOrder]; 
+		IO`println("New Order for " ^ user.getEmail()); 
+		IO`print("Order ID "); IO`println(newOrder.getId()); 
+		IO`println("Please add Products");
+		return "success";
+		) 
+	else return "User doesn't exist.";
 );
 
 public cloneProd: Product * nat ==> Product

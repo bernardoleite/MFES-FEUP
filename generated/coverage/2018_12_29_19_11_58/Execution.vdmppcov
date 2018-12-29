@@ -69,8 +69,7 @@ IO`print("Order: "); IO`println(orderID);
 IO`println("Order State: DELIVERED"); 
 IO`println("By Courier: " ^ courierID); 
 return "success";
-)
-pre (orderID in set dom refOrders);
+);
 
 public assignCourier: string * int ==> string
 assignCourier(courierID, orderID) == (
@@ -120,19 +119,18 @@ return "success";
  
 public createOrder: string ==> string
 createOrder(email) == (
-for user in users do (
-		if user.getEmail() = email then
-			(
-			dcl newOrder : Order := new Order(user);
-			orders := orders ^ [newOrder]; 
-			refOrders := refOrders ++ {newOrder.getId() |-> len orders - 1};
-			IO`println("New Order for " ^ user.getEmail()); 
-			IO`print("Order ID "); IO`println(newOrder.getId()); 
-			IO`println("Please add Products");
-			return "success";
-			) 
-		);
-	return "User doesn't exist.";
+for user in users do 
+	if user.getEmail() = email then
+		(
+		dcl newOrder : Order := new Order(user);
+		orders := orders ^ [newOrder]; 
+		refOrders := refOrders ++ {newOrder.getId() |-> len orders - 1};
+		IO`println("New Order for " ^ user.getEmail()); 
+		IO`print("Order ID "); IO`println(newOrder.getId()); 
+		IO`println("Please add Products");
+		return "success";
+		) 
+	else return "User doesn't exist.";
 );
 
 public cloneProd: Product * nat ==> Product

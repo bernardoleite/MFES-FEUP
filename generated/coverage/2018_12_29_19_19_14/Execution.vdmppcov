@@ -69,8 +69,7 @@ IO`print("Order: "); IO`println(orderID);
 IO`println("Order State: DELIVERED"); 
 IO`println("By Courier: " ^ courierID); 
 return "success";
-)
-pre (orderID in set dom refOrders);
+);
 
 public assignCourier: string * int ==> string
 assignCourier(courierID, orderID) == (
