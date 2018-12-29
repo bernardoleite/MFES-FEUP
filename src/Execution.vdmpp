@@ -2,8 +2,6 @@ class Execution
 
 types
 public string = seq of char;
-public Category = <Pizza> | <SnacksDrinks> | <Candies> | <Pharmacy> | <Sushi>;
-
 
 values
 address1 : User`Address = mk_User`Address("as","as","as","as");
@@ -16,6 +14,7 @@ private couriers: seq of Courier;
 private orders: seq of Order;
 private refOrders: map int to int;
 private users: seq of User;
+private categories: set of string;
 
 -- Users
 user0 : User := new User("blankuser", address1);
@@ -38,8 +37,8 @@ prod3B : Product := new Product("Pizza Margherita", 6.5, "Pizza normal", 2);
 prodsB : seq of Product := [prod2B,prod3B];
 
 -- Stores
-store1: Store := new Store("store1", <Candies>, "Candies Store", "10-15min", 1.5, prodsA);
-store2: Store := new Store("store2", <Pizza>, "Papa Pizza", "10-30min", 5, prodsB);
+store1: Store := new Store("store1", "candies", "Candies Store", "10-15min", 1.5, prodsA);
+store2: Store := new Store("store2", "pizza", "Papa Pizza", "10-30min", 5, prodsB);
 
 -- Orders
 order1: Order := new Order(user1);
@@ -54,6 +53,7 @@ products := products ^ [prod1A, prod2A, prod3A];
 couriers := couriers ^ [courier1]; 
 refOrders := {0 |-> -1 };
 users := users ^ [user1,user2];
+categories :=  {"pizza", "snacks", "candies", "pharmacy", "sushi"};
 return self
 );
 
@@ -68,7 +68,7 @@ performOrder(courierID, orderID) == (
 IO`print("Order: "); IO`println(orderID); 
 IO`println("Order State: DELIVERED"); 
 IO`println("By Courier: " ^ courierID); 
-return "success";
+return "Result: success";
 )
 pre (orderID in set dom refOrders);
 
@@ -82,7 +82,7 @@ assignCourier(courierID, orderID) == (
  	);
 IO`print("Order: "); IO`println(orderID); 
 IO`print("Assigned Courier: "); IO`println(courierID); 
-return "success";
+return "Result: success";
 );
 
 public getUsers: () ==> seq of User
@@ -104,18 +104,57 @@ getrefOrders() == (
 return refOrders;
 );
 
+public listCategories: () ==> string
+listCategories() == 
+(
+for all category in set categories do (
+IO`println("Category: " ^ category);
+);
+return "Result: success";
+);
+
+public listStores: string ==> string
+listStores(categoryName) == 
+(
+IO`println("Stores with Category: " ^ categoryName);
+for store in stores do (
+	if store.getCategory() = categoryName then IO`println("Store: " ^ store.getName());
+);
+return "Result: success";
+);
+
+public listStoreProducts: string ==> string
+listStoreProducts(storeName) == 
+(
+dcl auxProducts : seq of Product ;
+dcl countProds : int := 0;
+
+IO`println("Products of: " ^ storeName);
+	for store in stores do (
+		if store.getName() = storeName then auxProducts := store.getProducts();
+	);
+	
+	for auxProd in auxProducts do (
+		IO`print(countProds); IO`println(" Name: " ^ auxProd.getName() ^ ". Description: " ^ auxProd.getDescription());
+		IO`print("Unit Price: " ); IO`println(auxProd.getPrice());
+		countProds:=countProds+1;
+	);
+	
+return "Result: success";
+);
+
 public listCouriers: () ==> string
 listCouriers() == 
 (
 for courier in couriers do (IO`println("Courier ID: " ^ courier.getcardID()););
-return "success";
+return "Result: success";
 );
 
 public listUsers: () ==> string
 listUsers() == 
 (
 for user in users do (IO`println("User Email: " ^ user.getEmail()););
-return "success";
+return "Result: success";
 );
  
 public createOrder: string ==> string
@@ -129,7 +168,7 @@ for user in users do (
 			IO`println("New Order for " ^ user.getEmail()); 
 			IO`print("Order ID "); IO`println(newOrder.getId()); 
 			IO`println("Please add Products");
-			return "success";
+			return "Result: success";
 			) 
 		);
 	return "User doesn't exist.";
@@ -157,7 +196,7 @@ for store in stores do (
 			if order.getUser().getEmail() = email then (auxRet := order.addProduct(newProd););
 			IO`println("Product(s) added. Current Order:"); 
 			for prod in order.getProducts() do (IO`print(prod.getName() ^ ". Quantity: "); IO`println(prod.getStock())); 
-			return "success";
+			return "Result: success";
 			)  
 		);
  ) );
@@ -174,7 +213,7 @@ for order in orders do (
 			IO`println("Order Concluded. Bill:"); 
 			for prod in order.getProducts() do (IO`print(prod.getName() ^ ". Quantity: "); IO`print(prod.getStock()); IO`print(" Unit Price: "); IO`println(prod.getPrice()));
 			IO`print("Total: "); IO`println(order.getTotalCost()); 
-			return "success";
+			return "Result: success";
 			)
 		);
 
