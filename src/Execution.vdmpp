@@ -71,6 +71,11 @@ IO`println("By Courier: " ^ courierID);
 return "Result: success";
 )
 pre (orderID in set dom refOrders);
+--order existe
+--courier existe
+--courier é responsavel pela order
+--order esta em estado READY
+--pos order fica em DELIVERED
 
 public assignCourier: string * int ==> string
 assignCourier(courierID, orderID) == (
@@ -84,6 +89,9 @@ IO`print("Order: "); IO`println(orderID);
 IO`print("Assigned Courier: "); IO`println(courierID); 
 return "Result: success";
 );
+--courier e order existem
+--order ainda n tem Courier
+--order esta em estado Ready
 
 public getUsers: () ==> seq of User
 getUsers() == (
@@ -112,6 +120,7 @@ IO`println("Category: " ^ category);
 );
 return "Result: success";
 );
+--category existe
 
 public listStores: string ==> string
 listStores(categoryName) == 
@@ -122,6 +131,7 @@ for store in stores do (
 );
 return "Result: success";
 );
+--store existe
 
 public listStoreProducts: string ==> string
 listStoreProducts(storeName) == 
@@ -142,6 +152,7 @@ IO`println("Products of: " ^ storeName);
 	
 return "Result: success";
 );
+--store existe
 
 public listCouriers: () ==> string
 listCouriers() == 
@@ -173,6 +184,7 @@ for user in users do (
 		);
 	return "User doesn't exist.";
 );
+-- email existe
 
 public cloneProd: Product * nat ==> Product
 cloneProd(refProd, numberUnits) == (
@@ -202,6 +214,7 @@ for store in stores do (
  ) );
 	return "error";
 );
+-- email, orderid, storename, index e numberunits são reias
 
 public concludeOrder: string * int ==> string
 concludeOrder(email, orderId) == (
@@ -219,6 +232,9 @@ for order in orders do (
 
 	return "error";
 );
+-- email e order existem
+-- order esta em estado INIT
+--pos esta em READY
 
 public populateDB: () ==> nat
 populateDB() == (
