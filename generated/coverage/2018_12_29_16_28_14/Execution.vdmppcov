@@ -55,15 +55,7 @@ return self
 
 public deliverOrder: string * int ==> string
 deliverOrder(courierID, orderID) == (
- dcl auxCourier : Courier ;
- dcl auxReturn: int ;
- for courier in couriers do  (if(courier.getcardID()=courierID) then auxCourier := courier; );
- for order in orders do (
- 	if order.getId() = orderID then auxReturn := order.deliverOrder(courierID);
- 	);
-IO`print("Order: "); IO`println(orderID); 
-IO`println("Order State: DELIVERED"); 
-IO`println("By Courier: " ^ courierID); 
+
 return "success";
 );
 
@@ -196,8 +188,6 @@ end Execution
 -- print t.createOrder("bernas@hotmail.com")
 -- print t.addProductToOrder("bernas@hotmail.com",1000,"store1",1,1)
 -- print t.concludeOrder("bernas@hotmail.com",1000)
--- print t.assignCourier("maria@glovo.com",1000)
--- print t.deliverOrder("maria@glovo.com",1000)
 -- print t.getUser1().setPersonInfo("Teste", <Male>, 20)
 -- print t.getUser1()
 -- print t.getStore1().addProduct(t.getProduct1())

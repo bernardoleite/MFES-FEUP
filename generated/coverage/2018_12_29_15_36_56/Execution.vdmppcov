@@ -21,7 +21,7 @@ user2 : User := new User("vitorino@hotmail.com", address2);
 users : seq of User := [user1,user2];
 
 -- Couriers
-courier1 : Courier := new Courier("maria@glovo.com", 800);
+courier1 : Courier := new Courier("Maria@glovo.com", 30);
 
 -- Products
 prod1A : Product := new Product("Rabanada", 2.5, "Rabanada de Convento", 5);
@@ -51,33 +51,6 @@ products := products ^ [prod1A, prod2A, prod3A];
 users := users ^ [user1]; 
 couriers := couriers ^ [courier1]; 
 return self
-);
-
-public deliverOrder: string * int ==> string
-deliverOrder(courierID, orderID) == (
- dcl auxCourier : Courier ;
- dcl auxReturn: int ;
- for courier in couriers do  (if(courier.getcardID()=courierID) then auxCourier := courier; );
- for order in orders do (
- 	if order.getId() = orderID then auxReturn := order.deliverOrder(courierID);
- 	);
-IO`print("Order: "); IO`println(orderID); 
-IO`println("Order State: DELIVERED"); 
-IO`println("By Courier: " ^ courierID); 
-return "success";
-);
-
-public assignCourier: string * int ==> string
-assignCourier(courierID, orderID) == (
- dcl auxCourier : Courier ;
- dcl auxReturn: int ;
- for courier in couriers do  (if(courier.getcardID()=courierID) then auxCourier := courier; );
- for order in orders do (
- 	if order.getId() = orderID then auxReturn:=order.setCourier(auxCourier);
- 	);
-IO`print("Order: "); IO`println(orderID); 
-IO`print("Assigned Courier: "); IO`println(courierID); 
-return "success";
 );
 
 public getUsers: () ==> seq of User
@@ -196,8 +169,6 @@ end Execution
 -- print t.createOrder("bernas@hotmail.com")
 -- print t.addProductToOrder("bernas@hotmail.com",1000,"store1",1,1)
 -- print t.concludeOrder("bernas@hotmail.com",1000)
--- print t.assignCourier("maria@glovo.com",1000)
--- print t.deliverOrder("maria@glovo.com",1000)
 -- print t.getUser1().setPersonInfo("Teste", <Male>, 20)
 -- print t.getUser1()
 -- print t.getStore1().addProduct(t.getProduct1())

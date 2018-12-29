@@ -34,13 +34,6 @@ products := products ^ [newProd];
 return 1;
 );
 
-public deliverOrder: string ==> int
-deliverOrder(courierID) == (
-if courier.getcardID() = courierID then (state := <DELIVERED>;)
-else return -1;
-return 1;
-);
-
 public getId: () ==> int
 getId() == return orderID;
 
