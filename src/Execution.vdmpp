@@ -68,7 +68,7 @@ IO`println("Create an Order : print t.createOrder(name@mail.com)");
 IO`println("Add Product to Order : print t.addProductToOrder(name@mail.com,OrderID,storeName,productIndex,numberUnits)");
 IO`println("Finish your order: print t.concludeOrder(name@mail.com,OrderID)");
 IO`println("Assign a Courier to your order: print t.assignCourier(courier@glovo.com,OrderID)");
-IO`println("Perform an Order: print t.performOrder(courier@glovo.com,OrderID)");
+IO`println("Perform an Order : print t.performOrder(courier@glovo.com,OrderID)");
 return self
 );
 
