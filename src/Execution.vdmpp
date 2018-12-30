@@ -24,7 +24,6 @@ user0 : User := new User("blankuser", address1);
 user1 : User := new User("bernas@hotmail.com", address1);
 user2 : User := new User("vitorino@hotmail.com", address2);
 
-
 -- Couriers
 courier1 : Courier := new Courier("maria@glovo.com", 800);
 
@@ -57,7 +56,35 @@ couriers := couriers ^ [courier1];
 refOrders := {0 |-> -1 };
 users := users ^ [user1,user2];
 categories :=  {"pizza", "snacks", "candies", "pharmacy", "sushi"};
+IO`println("Welcome to feup-Glovo App! Made by MFES Brothers."); 
+IO`println("Here is what you can do:"); 
+IO`println("List Categories : print t.listCategories()");
+IO`println("List Stores : print t.listStores(CategoryName)");
+IO`println("List Products of Store : print t.listStoreProducts(StoreName)");
+IO`println("List Orders : print t.listOrders(request) -> request can be all or UserEmail");
+IO`println("List Users : print t.listUsers()");
+IO`println("List Couriers : print t.listCouriers()");
+IO`println("Create an Order : print t.createOrder(name@mail.com)");
+IO`println("Add Product to Order : print t.addProductToOrder(name@mail.com,OrderID,storeName,productIndex,numberUnits)");
+IO`println("Finish your order: print t.concludeOrder(name@mail.com,OrderID)");
+IO`println("Assign a Courier to your order: print t.assignCourier(courier@glovo.com,OrderID)");
+IO`println("Perform an Order: print t.performOrder(courier@glovo.com,OrderID)");
 return self
+);
+
+public addUser: string * string * string * string * string ==> string
+addUser(email, address, street, zip_code, country) == (
+dcl newAddress : User`Address := mk_User`Address(address,street,zip_code,country);
+dcl newUser : User := new User(email, newAddress);
+users := users ^ [newUser];
+return "Result: User added to Users list.";
+);
+
+public addCourier: string * int ==> string
+addCourier(idCard, salary) == (
+dcl newCourier : Courier := new Courier(idCard, salary);
+couriers := couriers ^ [newCourier];
+return "Result: Courier added to Couriers list.";
 );
 
 public performOrder: string * int ==> string
@@ -172,6 +199,36 @@ return 1;
 );
 
 -- 																										<LISTING OPERATIONS>
+-- "all" for all orders and "email" for user orders
+public listOrders: string  ==> string
+listOrders(request) == 
+(
+if request = "all" then for order in orders do
+(
+IO`print("Order ID: "); IO`println(order.getId());
+IO`print("State of Order: "); IO`println(order.getState());
+IO`print("Client: "); IO`println(order.getUser().getEmail());
+IO`println("Products (if any): ");
+if len order.getProducts() > 0 then 
+(for product in order.getProducts() do (IO`print("Product: " ^ product.getName() ^ ". Units: "); IO`println(product.getStock())););
+);
+
+if request <> "all" then for order in orders do
+(
+if (order.getUser().getEmail() = request) then (
+IO`print("Order ID: "); IO`println(order.getId());
+IO`print("State of Order: "); IO`println(order.getState());
+IO`print("Client: "); IO`println(order.getUser().getEmail());
+IO`println("Products (if any): ");
+if len order.getProducts() > 0 then 
+(for product in order.getProducts() do (IO`print("Product: " ^ product.getName() ^ ". Units: "); IO`println(product.getStock()));););
+);
+
+
+IO`println("\n");
+return "Result: success";
+);
+--category existe
 
 public listCategories: () ==> string
 listCategories() == 
