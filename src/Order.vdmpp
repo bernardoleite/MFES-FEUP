@@ -5,12 +5,12 @@ public State = <INIT> | <ORDER_CONCLUDED> | <DELIVERED> ;
 values
 -- TODO Define values here
 instance variables
-private orderID:  int;
+public orderID:  int;
 private totalCost : real;
 private products : seq of Product;
-private courier : [Courier] :=nil;
+public courier : [Courier] :=nil;
 private user : User;
-private state: State;
+public state: State;
 
 operations
 public Order: User ==> Order
@@ -22,19 +22,18 @@ user := user_reference;
 totalCost := 0;
 return self
 );
--- pre exists user_reference in set elems Execution`getUsers();
 
 public addProduct: Product ==> int
 addProduct(newProd) == (
 dcl auxRet : nat ;
 for prod in products do 
 (
-if prod.getName() = newProd.getName()  then (auxRet:=prod.addStock(newProd.getStock()); return 1;) 
+if prod.getName() = newProd.getName() then (auxRet:=prod.addStock(newProd.getStock()); return 1;) 
 );
 products := products ^ [newProd];
 return 1;
-);
--- pre newProd.getStock() > 0;
+)
+pre newProd.quantity > 0;
 
 public deliverOrder: string ==> int
 deliverOrder(courierID) == (
@@ -50,8 +49,8 @@ for prod in products do(totalCost := totalCost + prod.getPrice()*prod.getStock()
 state := <ORDER_CONCLUDED>;
 return 1;
 )
-pre (state = <INIT> and totalCost > 0)
-post state = <ORDER_CONCLUDED>;
+pre state = <INIT>
+post totalCost > 0 and state = <ORDER_CONCLUDED>;
 
 public setCourier: Courier ==> int
 setCourier(assignedCourier) == (courier:=assignedCourier; return 1;)

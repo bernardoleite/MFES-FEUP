@@ -1,22 +1,19 @@
 class Product
 types
 public string = seq of char;
-public Category = <Pizza> | <SnacksDrinks> | <Candies> | <Pharmacy> | <Sushi>;
 values
 -- TODO Define values here
 instance variables
 private name : string;
-private price : real;
+private price : real := 0.1;
 private description : string;
-private quantity: nat;
-private store : [Store] :=nil;
+public quantity: nat;
 private orders : set of Order := {};
-inv price > 0;
-inv quantity >= 0;
 
 operations
 public Product: string * real * string * nat ==> Product
-Product(na, pri, des, qty) == (name := na; price := pri; description:=des; quantity := qty;  return self);
+Product(na, pri, des, qty) == (name := na; price := pri; description:=des; quantity := qty; return self)
+pre price > 0;
 
 public addStock: nat ==> nat
 addStock(numberUnits) == (
@@ -33,15 +30,6 @@ return quantity;
 )
 pre numberUnits > 0
 post RESULT = quantity;
-
-public setStore: Store ==> ()
-setStore(sto) == store := sto
-pre sto <> store 
-post store = sto;
-
-public getStore: () ==> Store
-getStore() == return store
-post RESULT = store;
 
 public getName: () ==> string
 getName() == return name

@@ -14,7 +14,7 @@ operations
 public setPersonInfo: string * Gender * nat ==> ()
 setPersonInfo(na, ge, ag) == is subclass responsibility
 pre ag > 18
-post self.age = ag;
+post age = ag;
 
 public getName: () ==> string
 getName() == return name

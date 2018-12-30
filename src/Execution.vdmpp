@@ -16,6 +16,9 @@ private refOrders: map int to int;
 private users: seq of User;
 private categories: set of string;
 
+
+-- pre not exists user in set elems users & user.email= em; TODO: addUser
+
 -- Users
 user0 : User := new User("blankuser", address1);
 user1 : User := new User("bernas@hotmail.com", address1);
@@ -70,12 +73,13 @@ IO`println("Order State: DELIVERED");
 IO`println("By Courier: " ^ courierID); 
 return "Result: success";
 )
-pre (orderID in set dom refOrders);
---order existe
---courier existe
---courier é responsavel pela order
---order esta em estado READY
---pos order fica em DELIVERED
+pre (orderID in set dom refOrders
+ and exists1 order in set elems orders & order.orderID = orderID
+ and exists1 courier in set elems couriers & courier.cardID = courierID
+ and order.state = <ORDER_CONCLUDED> 
+ and order.courier.cardID = courierID
+ )
+post exists order in set elems orders & (order.orderID = orderID and order.state = <DELIVERED>);
 
 public assignCourier: string * int ==> string
 assignCourier(courierID, orderID) == (
@@ -88,10 +92,10 @@ assignCourier(courierID, orderID) == (
 IO`print("Order: "); IO`println(orderID); 
 IO`print("Assigned Courier: "); IO`println(courierID); 
 return "Result: success";
-);
---courier e order existem
---order ainda n tem Courier
---order esta em estado Ready
+)
+pre exists1 order in set elems orders & (order.orderID = orderID and (order.courier = nil or order.courier.cardID <> courierID) and order.state = <ORDER_CONCLUDED>)
+ and exists1 courier in set elems couriers & courier.cardID = courierID
+post exists1 order in set elems orders & (order.orderID = orderID and order.courier.cardID = courierID);
  
 public createOrder: string ==> string
 createOrder(email) == (
@@ -108,8 +112,8 @@ for user in users do (
 			) 
 		);
 	return "User doesn't exist.";
-);
--- email existe
+)
+pre exists user in set elems users & user.email = email;
 
 public cloneProd: Product * nat ==> Product
 cloneProd(refProd, numberUnits) == (
@@ -138,8 +142,8 @@ for store in stores do (
 		);
  ) );
 	return "error";
-);
--- email, orderid, storename, index e numberunits são reias
+)
+pre exists1 order in set elems orders & (order.orderID = orderId and order.state = <INIT>);
 
 public concludeOrder: string * int ==> string
 concludeOrder(email, orderId) == (
@@ -156,10 +160,10 @@ for order in orders do (
 		);
 
 	return "error";
-);
--- email e order existem
--- order esta em estado INIT
---pos esta em READY
+)
+pre exists1 order in set elems orders & (order.orderID = orderId and order.state = <INIT>)
+	and exists1 user in set elems users & user.email = email
+post exists order in set elems orders & (order.orderID = orderId and order.state = <ORDER_CONCLUDED>);
 
 public populateDB: () ==> nat
 populateDB() == (
@@ -208,8 +212,8 @@ IO`println("Products of: " ^ storeName);
 	);
 	
 return "Result: success";
-);
--- pre exists1 store in set elems stores & store.getName() = storeName
+)
+pre exists1 store in set elems stores & store.name = storeName;
 
 public listCouriers: () ==> string
 listCouriers() == 
@@ -278,10 +282,10 @@ end Execution
 
 -- create t := new Execution()
 -- print t.createOrder("bernas@hotmail.com")
--- print t.addProductToOrder("bernas@hotmail.com",1000,"store1",1,1)
--- print t.concludeOrder("bernas@hotmail.com",1000)
--- print t.assignCourier("maria@glovo.com",1000)
--- print t.performOrder("maria@glovo.com",1000)
+-- print t.addProductToOrder("bernas@hotmail.com",XXXX,"store1",1,1)
+-- print t.concludeOrder("bernas@hotmail.com",XXXX)
+-- print t.assignCourier("maria@glovo.com",XXXX)
+-- print t.performOrder("maria@glovo.com",XXXX)
 -- print t.getUser1().setPersonInfo("Teste", <Male>, 20)
 -- print t.getUser1()
 -- print t.getStore1().addProduct(t.getProduct1())

@@ -4,7 +4,7 @@ public string = seq of char;
 values
 -- TODO Define values here
 instance variables
-private name : string;
+public name : string;
 private category : string;
 private description : string;
 private estimateTime : string;
@@ -17,12 +17,11 @@ operations
 public Store: string * string * string * string * real * seq of Product ==> Store
 Store(na, ca, des, time, cost, prods) == (name := na; category:=ca; description := des; estimateTime:=time; deliveryCost := cost; products := prods; return self)
 pre cost > 0
-post self.deliveryCost = cost;
+post deliveryCost = cost;
 
 public addProduct: Product ==> nat
 addProduct(p) == (
 products := products ^ [p];
-p.setStore(self);
 return len products;
 )
 pre p not in set elems products

@@ -7,20 +7,14 @@ public Address :: address : string
 							 	  country : string;
 	--inv a == '-' in Address.zip-code;
 	
-
-				 	  
 values
 instance variables
-private email : string;
+public email : string;
 private address: Address;
 
 operations
 public User: string * User`Address ==> User
 User(em, addr) == (email:=em; address:=addr; return self);
---pre forall p in set Execution`getUsers() & em <> p.email;
-
-public setEmail: string ==> string
-setEmail(newEmail) == (email:=newEmail; return email;);
 
 public getEmail: () ==> string
 getEmail() == return email
@@ -32,6 +26,9 @@ post RESULT = address;
 
 public setPersonInfo: string * Gender * nat ==> ()
 setPersonInfo(na, ge, ag) == (name := na; gender := ge; age:=ag;);
+
+public setEmail: string ==> string
+setEmail(newEmail) == (email:=newEmail; return email;);
 
 functions
 -- TODO Define functiones here
