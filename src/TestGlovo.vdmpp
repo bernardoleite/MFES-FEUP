@@ -18,7 +18,7 @@ operations
 
  dcl currentNumOrders: int :=  len exec.getOrders();
  dcl auxReturn : string := exec.createOrder("bernas@hotmail.com");
- assertTrue(len exec.getOrders() < currentNumOrders);
+ assertTrue(len exec.getOrders() > currentNumOrders);
  );
  
  public static main: () ==> ()
