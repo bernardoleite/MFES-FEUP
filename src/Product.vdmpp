@@ -9,13 +9,39 @@ private name : string;
 private price : real;
 private description : string;
 private quantity: nat;
-private store : [Store];
-private orders : set of Order;
+private store : [Store] :=nil;
+private orders : set of Order := {};
 inv price > 0;
+inv quantity >= 0;
 
 operations
 public Product: string * real * string * nat ==> Product
-Product(na, pri, des, qty) == (name := na; price := pri; description:=des; quantity := qty; return self);
+Product(na, pri, des, qty) == (name := na; price := pri; description:=des; quantity := qty;  return self);
+
+public addStock: nat ==> nat
+addStock(numberUnits) == (
+quantity := quantity + numberUnits;
+return quantity;
+)
+pre numberUnits >= 0
+post RESULT = quantity;
+
+public removeStock: nat ==> nat
+removeStock(numberUnits) == (
+quantity := quantity - numberUnits;
+return quantity;
+)
+pre numberUnits > 0
+post RESULT = quantity;
+
+public setStore: Store ==> ()
+setStore(sto) == store := sto
+pre sto <> store 
+post store = sto;
+
+public getStore: () ==> Store
+getStore() == return store
+post RESULT = store;
 
 public getName: () ==> string
 getName() == return name
@@ -32,30 +58,6 @@ post RESULT = description;
 public getStock: () ==> nat
 getStock() == return quantity
 post RESULT = quantity;
-
-public addStock: nat ==> nat
-addStock(numberUnits) == (
-quantity := quantity + numberUnits;
-return quantity;
-)
-pre numberUnits > 0
-post RESULT = quantity;
-
-public removeStock: nat ==> nat
-removeStock(numberUnits) == (
-quantity := quantity - numberUnits;
-return quantity;
-)
-pre numberUnits > 0
-post RESULT = quantity;
-
-public setStore: Store ==> ()
-setStore(sto) == store := sto
-pre sto <> store; 
-
-public getStore: () ==> Store
-getStore() == return store
-post RESULT = store;
 
 functions
 

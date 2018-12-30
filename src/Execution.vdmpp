@@ -92,81 +92,6 @@ return "Result: success";
 --courier e order existem
 --order ainda n tem Courier
 --order esta em estado Ready
-
-public getUsers: () ==> seq of User
-getUsers() == (
-return users;
-);
-
-public getStores: () ==> seq of Store
-getStores() == return stores;
-
-public getCouriers: () ==> seq of Courier
-getCouriers() == return couriers;
-
-public getOrders: () ==> seq of Order
-getOrders() == return orders;
-
-public getrefOrders: () ==> map int to int
-getrefOrders() == (
-return refOrders;
-);
-
-public listCategories: () ==> string
-listCategories() == 
-(
-for all category in set categories do (
-IO`println("Category: " ^ category);
-);
-return "Result: success";
-);
---category existe
-
-public listStores: string ==> string
-listStores(categoryName) == 
-(
-IO`println("Stores with Category: " ^ categoryName);
-for store in stores do (
-	if store.getCategory() = categoryName then IO`println("Store: " ^ store.getName());
-);
-return "Result: success";
-);
---store existe
-
-public listStoreProducts: string ==> string
-listStoreProducts(storeName) == 
-(
-dcl auxProducts : seq of Product ;
-dcl countProds : int := 0;
-
-IO`println("Products of: " ^ storeName);
-	for store in stores do (
-		if store.getName() = storeName then auxProducts := store.getProducts();
-	);
-	
-	for auxProd in auxProducts do (
-		IO`print(countProds); IO`println(" Name: " ^ auxProd.getName() ^ ". Description: " ^ auxProd.getDescription());
-		IO`print("Unit Price: " ); IO`println(auxProd.getPrice());
-		countProds:=countProds+1;
-	);
-	
-return "Result: success";
-);
---store existe
-
-public listCouriers: () ==> string
-listCouriers() == 
-(
-for courier in couriers do (IO`println("Courier ID: " ^ courier.getcardID()););
-return "Result: success";
-);
-
-public listUsers: () ==> string
-listUsers() == 
-(
-for user in users do (IO`println("User Email: " ^ user.getEmail()););
-return "Result: success";
-);
  
 public createOrder: string ==> string
 createOrder(email) == (
@@ -241,6 +166,88 @@ populateDB() == (
 
 return 1;
 );
+
+-- 																										<LISTING OPERATIONS>
+
+public listCategories: () ==> string
+listCategories() == 
+(
+for all category in set categories do (
+IO`println("Category: " ^ category);
+);
+return "Result: success";
+);
+--category existe
+
+public listStores: string ==> string
+listStores(categoryName) == 
+(
+IO`println("Stores with Category: " ^ categoryName);
+for store in stores do (
+	if store.getCategory() = categoryName then (IO`println("Store: " ^ store.getName()); return "Result: success")
+);
+return "Result: error on listing store";
+)
+pre categoryName in set categories;
+
+public listStoreProducts: string ==> string
+listStoreProducts(storeName) == 
+(
+dcl auxProducts : seq of Product ;
+dcl countProds : int := 0;
+
+IO`println("Products of: " ^ storeName);
+	for store in stores do (
+		if store.getName() = storeName then auxProducts := store.getProducts();
+	);
+	
+	for auxProd in auxProducts do (
+		IO`print(countProds); IO`println(" Name: " ^ auxProd.getName() ^ ". Description: " ^ auxProd.getDescription());
+		IO`print("Unit Price: " ); IO`println(auxProd.getPrice());
+		countProds:=countProds+1;
+	);
+	
+return "Result: success";
+);
+-- pre exists1 store in set elems stores & store.getName() = storeName
+
+public listCouriers: () ==> string
+listCouriers() == 
+(
+for courier in couriers do (IO`println("Courier ID: " ^ courier.getcardID()););
+return "Result: success";
+)
+pre couriers <> [];
+
+public listUsers: () ==> string
+listUsers() == 
+(
+for user in users do (IO`println("User Email: " ^ user.getEmail()););
+return "Result: success";
+)
+pre users <> [];
+
+-- 																										<GET OPERATIONS>
+
+public getUsers: () ==> seq of User
+getUsers() == return users
+post RESULT = users;
+
+public getStores: () ==> seq of Store
+getStores() == return stores
+post RESULT = stores;
+
+public getCouriers: () ==> seq of Courier
+getCouriers() == return couriers
+post RESULT = couriers;
+
+public getOrders: () ==> seq of Order
+getOrders() == return orders
+post RESULT = orders;
+
+public getrefOrders: () ==> map int to int
+getrefOrders() == return refOrders
+post RESULT = refOrders;
 
 -- !USER --
 -- see user information

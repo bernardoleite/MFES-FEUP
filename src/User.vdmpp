@@ -4,8 +4,10 @@ public string = seq of char;
 public Address :: address : string
 									street : string
 								  zip_code: string
-							 	  country : string
-	--inv '-' in Address.zip-code;
+							 	  country : string;
+	--inv a == '-' in Address.zip-code;
+	
+
 				 	  
 values
 instance variables

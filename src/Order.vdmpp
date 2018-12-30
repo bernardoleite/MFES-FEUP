@@ -8,7 +8,7 @@ instance variables
 private orderID:  int;
 private totalCost : real;
 private products : seq of Product;
-private courier : [Courier];
+private courier : [Courier] :=nil;
 private user : User;
 private state: State;
 
@@ -18,10 +18,11 @@ Order(user_reference) == (
 products := [];
 state := <INIT>;
 orderID := MATH`rand(1000) + MATH`rand(1000);
-user := user_reference; 
+user := user_reference;
 totalCost := 0;
 return self
 );
+-- pre exists user_reference in set elems Execution`getUsers();
 
 public addProduct: Product ==> int
 addProduct(newProd) == (
@@ -33,44 +34,57 @@ if prod.getName() = newProd.getName()  then (auxRet:=prod.addStock(newProd.getSt
 products := products ^ [newProd];
 return 1;
 );
+-- pre newProd.getStock() > 0;
 
 public deliverOrder: string ==> int
 deliverOrder(courierID) == (
 if courier.getcardID() = courierID then (state := <DELIVERED>;)
 else return -1;
 return 1;
-);
-
-public getId: () ==> int
-getId() == return orderID;
-
-public getTotalCost: () ==> real
-getTotalCost() == return totalCost;
-
-public getProducts: () ==> seq of Product
-getProducts() == return products;
-
-public getCourier: () ==> Courier
-getCourier() == return courier;
-
-public getUser: () ==> User
-getUser() == return user;
-
-public setState: State ==> State
-setState(newState) == (state:=newState; return state;);
-
-public getState: () ==> State
-getState() == return state;
+)
+pre state = <ORDER_CONCLUDED>;
 
 public finishOrder: () ==> int
 finishOrder() == (
 for prod in products do(totalCost := totalCost + prod.getPrice()*prod.getStock());
 state := <ORDER_CONCLUDED>;
 return 1;
-);
+)
+pre (state = <INIT> and totalCost > 0)
+post state = <ORDER_CONCLUDED>;
 
 public setCourier: Courier ==> int
-setCourier(assignedCourier) == (courier:=assignedCourier; return 1;);
+setCourier(assignedCourier) == (courier:=assignedCourier; return 1;)
+pre courier <> assignedCourier
+post courier=assignedCourier;
+
+public getId: () ==> int
+getId() == return orderID
+post RESULT = orderID;
+
+public getTotalCost: () ==> real
+getTotalCost() == return totalCost
+post RESULT = totalCost;
+
+public getProducts: () ==> seq of Product
+getProducts() == return products
+post RESULT = products;
+
+public getCourier: () ==> Courier
+getCourier() == return courier
+post RESULT = courier;
+
+public getUser: () ==> User
+getUser() == return user
+post RESULT = user;
+
+public getState: () ==> State
+getState() == return state
+post RESULT = state;
+
+public setState: State ==> State
+setState(newState) == (state:=newState; return state;)
+post state = newState and RESULT = state;
 
 functions
 -- TODO Define functiones here

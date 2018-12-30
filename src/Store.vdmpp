@@ -19,11 +19,22 @@ Store(na, ca, des, time, cost, prods) == (name := na; category:=ca; description 
 pre cost > 0
 post self.deliveryCost = cost;
 
+public addProduct: Product ==> nat
+addProduct(p) == (
+products := products ^ [p];
+p.setStore(self);
+return len products;
+)
+pre p not in set elems products
+post p in set elems products;
+
 public getProduct: int ==> Product
-getProduct(productIndex) == return products(productIndex);
+getProduct(productIndex) == return products(productIndex)
+post RESULT = products(productIndex);
 
 public getProducts: () ==> seq of Product
-getProducts() == return products;
+getProducts() == return products
+post RESULT = products;
 
 public getName: () ==> string
 getName() == return name
@@ -45,15 +56,6 @@ public getDeliveryCost: () ==> real
 getDeliveryCost() == return deliveryCost
 post RESULT = deliveryCost;
 
-public addProduct: Product ==> nat
-addProduct(p) == (
-products := products ^ [p];
-p.setStore(self);
--- o produto adicionado fica com p.store = self;
-return len products;
-)
-pre p not in set elems products
-post p in set elems products;
 functions
 -- TODO Define Combinatorial Test Traces here
 end Store
