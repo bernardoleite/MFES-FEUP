@@ -4,11 +4,11 @@ public string = seq of char;
 values
 -- TODO Define values here
 instance variables
-private name : string;
-private price : real := 0.1;
-private description : string;
+public name : string;
+public price : real := 0.1;
+public description : string;
 public quantity: nat;
-private orders : set of Order := {};
+public orders : set of Order := {};
 
 operations
 public Product: string * real * string * nat ==> Product

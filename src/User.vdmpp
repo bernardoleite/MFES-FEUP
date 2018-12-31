@@ -25,10 +25,13 @@ getAddress() == return address
 post RESULT = address;
 
 public setPersonInfo: string * Gender * nat ==> ()
-setPersonInfo(na, ge, ag) == (name := na; gender := ge; age:=ag;);
+setPersonInfo(na, ge, ag) == (name := na; gender := ge; age:=ag;)
+post name = na and gender = ge and age = ag;
 
 public setEmail: string ==> string
-setEmail(newEmail) == (email:=newEmail; return email;);
+setEmail(newEmail) == (email:=newEmail; return email;)
+pre newEmail <> email
+post email = newEmail;
 
 functions
 -- TODO Define functiones here
