@@ -9,6 +9,7 @@ public string = seq of char;
 instance variables
 	exec : Execution := new Execution();
 	orderId: int := 0;
+	order: Order ;
  
 operations
 /***** USE CASE SCENARIOS ******/
@@ -16,9 +17,16 @@ operations
  private test_CreateOrder: () ==> ()
  test_CreateOrder() ==
  (
+ dcl currentRefOrders: map int to int;
+ dcl orderIndex: nat;
 
  dcl currentNumOrders: int :=  len exec.getOrders();
  orderId := exec.createOrder("blankuser");
+ 
+ currentRefOrders :=  exec.getrefOrders();
+ orderIndex := currentRefOrders(orderId);
+ order :=  exec.getOrders()(orderIndex);
+ 	
  assertEqual(currentNumOrders+1,len exec.getOrders());
  );
  
@@ -26,14 +34,10 @@ operations
  test_AddProductToOrder() ==
  (
 
- dcl currentRefOrders: map int to int :=  exec.getrefOrders();
- dcl orderIndex: nat := currentRefOrders(orderId);
- dcl getOrder: Order :=  exec.getOrders()(orderIndex);
- 
- dcl numberProducts: int :=  len getOrder.getProducts();
+ dcl numberProducts: int :=  len order.getProducts();
  
  dcl auxRet : string := exec.addProductToOrder("blankuser", orderId, "store1", 1, 1);
- dcl newNumberProducts: int :=  len getOrder.getProducts();
+ dcl newNumberProducts: int :=  len order.getProducts();
  assertEqual(newNumberProducts,numberProducts+1);
 
  );
@@ -41,16 +45,37 @@ operations
   private test_concludeOrder: () ==> ()
  test_concludeOrder() ==
  (
- 	dcl currentRefOrders: map int to int :=  exec.getrefOrders();
-  dcl orderIndex: nat := currentRefOrders(orderId);
- 	dcl getOrder: Order :=  exec.getOrders()(orderIndex);
 	dcl auxRet : string;
-	assertTrue(getOrder.getState() = <INIT>);
+	assertTrue(order.getState() = <INIT>);
 	
  	auxRet := exec.concludeOrder("blankuser", orderId);
  	
-	assertTrue(len getOrder.getProducts() > 0);
-	assertTrue(getOrder.getState() = <ORDER_CONCLUDED>);
+	assertTrue(len order.getProducts() > 0);
+	assertTrue(order.getState() = <ORDER_CONCLUDED>);
+
+ );
+ 
+   private test_assignCourier: string ==> ()
+ test_assignCourier(cardId) ==
+ (
+ 	dcl auxRet : string;
+ 	
+ 	auxRet := exec.assignCourier(cardId,orderId);
+	assertTrue(order.getCourier().getcardID() = cardId);
+
+ );
+ 
+   private test_performOrder: string ==> ()
+ test_performOrder(cardId) ==
+ (
+ 	dcl auxRet : string;
+ 	
+ 	assertTrue(order.getCourier().getcardID() = cardId);
+ 	assertTrue(order.getState() = <ORDER_CONCLUDED>);
+ 	
+ 	auxRet := exec.performOrder(cardId,orderId);
+ 	
+	assertTrue(order.getState() = <DELIVERED>);
 
  );
  
@@ -62,6 +87,8 @@ operations
 	testGlovo.test_CreateOrder();
 	testGlovo.test_AddProductToOrder();
 	testGlovo.test_concludeOrder();
+	testGlovo.test_assignCourier("maria@glovo.com");
+	testGlovo.test_performOrder("maria@glovo.com");
 
  );
 
