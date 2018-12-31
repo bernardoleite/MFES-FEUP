@@ -15,7 +15,8 @@ public Courier: string * int ==> Courier
 Courier(idCard, sal) == (cardID := idCard; salary:=sal; return self);
 
 public setPersonInfo: string * Gender * nat ==> ()
-setPersonInfo(na, ge, ag) == (name := na; gender := ge; age:=ag;);
+setPersonInfo(na, ge, ag) == (name := na; gender := ge; age:=ag;)
+post name = na and gender = ge and age = ag;
 
 public getcardID: () ==> string
 getcardID() == return cardID

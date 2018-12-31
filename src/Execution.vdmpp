@@ -84,7 +84,7 @@ dcl newCourier : Courier := new Courier(idCard, salary);
 couriers := couriers ^ [newCourier];
 return "Result: Courier added to Couriers list.";
 )
-pre not exists courier in set elems couriers & courier.cardID= idCard and salary > 0;
+pre not exists courier in set elems couriers & courier.cardID= idCard;
 
 public performOrder: string * int ==> string
 performOrder(courierID, orderID) == (
@@ -170,7 +170,12 @@ for store in stores do (
  ) );
 	return "error";
 )
-pre exists1 order in set elems orders & (order.orderID = orderId and order.state = <INIT>);
+pre exists1 order in set elems orders & (order.orderID = orderId and order.state = <INIT>)
+	and exists user in set elems users & user.email = email
+	and exists store in set elems stores & store.name = storeName
+	and exists userOrder in set elems orders & userOrder.orderID = orderId
+	and products(productIndex) in set elems products;
+
 
 public concludeOrder: string * int ==> string
 concludeOrder(email, orderId) == (
@@ -236,7 +241,8 @@ for all category in set categories do (
 IO`println("Category: " ^ category);
 );
 return "Result: success";
-);
+)
+pre categories <> {};
 
 public listStores: string ==> string
 listStores(categoryName) == 
@@ -247,7 +253,7 @@ for store in stores do (
 );
 return "Result: error on listing store";
 )
-pre categoryName in set categories;
+pre categoryName in set categories and stores <> [];
 
 public listStoreProducts: string ==> string
 listStoreProducts(storeName) == 
@@ -268,7 +274,7 @@ IO`println("Products of: " ^ storeName);
 	
 return "Result: success";
 )
-pre exists1 store in set elems stores & store.name = storeName;
+pre exists1 store in set elems stores & store.name = storeName and stores <> [];
 
 public listCouriers: () ==> string
 listCouriers() == 
