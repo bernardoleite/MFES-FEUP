@@ -8,6 +8,7 @@ public string = seq of char;
 
 instance variables
 	exec : Execution := new Execution();
+	orderId: int := 0;
  
 operations
 /***** USE CASE SCENARIOS ******/
@@ -17,15 +18,50 @@ operations
  (
 
  dcl currentNumOrders: int :=  len exec.getOrders();
- dcl auxReturn : string := exec.createOrder("bernas@hotmail.com");
- assertTrue(len exec.getOrders() > currentNumOrders);
+ orderId := exec.createOrder("blankuser");
+ assertEqual(currentNumOrders+1,len exec.getOrders());
+ );
+ 
+  private test_AddProductToOrder: () ==> ()
+ test_AddProductToOrder() ==
+ (
+
+ dcl currentRefOrders: map int to int :=  exec.getrefOrders();
+ dcl orderIndex: nat := currentRefOrders(orderId);
+ dcl getOrder: Order :=  exec.getOrders()(orderIndex);
+ 
+ dcl numberProducts: int :=  len getOrder.getProducts();
+ 
+ dcl auxRet : string := exec.addProductToOrder("blankuser", orderId, "store1", 1, 1);
+ dcl newNumberProducts: int :=  len getOrder.getProducts();
+ assertEqual(newNumberProducts,numberProducts+1);
+
+ );
+ 
+  private test_concludeOrder: () ==> ()
+ test_concludeOrder() ==
+ (
+ 	dcl currentRefOrders: map int to int :=  exec.getrefOrders();
+  dcl orderIndex: nat := currentRefOrders(orderId);
+ 	dcl getOrder: Order :=  exec.getOrders()(orderIndex);
+	dcl auxRet : string;
+	assertTrue(getOrder.getState() = <INIT>);
+	
+ 	auxRet := exec.concludeOrder("blankuser", orderId);
+ 	
+	assertTrue(len getOrder.getProducts() > 0);
+	assertTrue(getOrder.getState() = <ORDER_CONCLUDED>);
+
  );
  
  public static main: () ==> ()
  main() ==
  (
  dcl testGlovo: TestGlovo :=  new TestGlovo();
- testGlovo.test_CreateOrder();
+ 
+	testGlovo.test_CreateOrder();
+	testGlovo.test_AddProductToOrder();
+	testGlovo.test_concludeOrder();
 
  );
 
