@@ -67,7 +67,8 @@ IO`println("Conclude your order: print t.concludeOrder(name@mail.com,OrderID)");
 IO`println("Assign a Courier to your order: print t.assignCourier(courier@glovo.com,OrderID)");
 IO`println("Perform an Order : print t.performOrder(courier@glovo.com,OrderID)");
 return self
-);
+)
+post RESULT = self;
 
 public addUser: string * string * string * string * string ==> string
 addUser(email, address, street, zip_code, country) == (
@@ -141,6 +142,7 @@ for user in users do (
 )
 pre exists user in set elems users & user.email = email;
 
+
 public cloneProd: Product * nat ==> Product
 cloneProd(refProd, numberUnits) == (
 dcl newProd : Product := new Product(refProd.getName(), refProd.getPrice(), refProd.getDescription(), numberUnits);
@@ -156,7 +158,6 @@ for store in stores do (
  	dcl auxRet : int ;
  	dcl refProd : Product := store.getProduct(productIndex); 
  	dcl newProd : Product := cloneProd(refProd, numberUnits);
- 	-- remove numberUnits from Product Store
  	dcl newStock : nat := refProd.removeStock(numberUnits);
  	for order in orders do (
 		if order.getId() = orderId then
@@ -173,7 +174,6 @@ for store in stores do (
 pre exists1 order in set elems orders & (order.orderID = orderId and order.state = <INIT>)
 	and exists user in set elems users & user.email = email
 	and exists store in set elems stores & store.name = storeName
-	and exists userOrder in set elems orders & userOrder.orderID = orderId
 	and products(productIndex) in set elems products;
 
 
@@ -231,7 +231,8 @@ if len order.getProducts() > 0 then
 
 IO`println("\n");
 return "Result: success";
-);
+)
+pre orders <> [];
 --category existe
 
 public listCategories: () ==> string
