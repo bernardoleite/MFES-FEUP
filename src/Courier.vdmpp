@@ -19,7 +19,7 @@ setPersonInfo(na, ge, ag) == (name := na; gender := ge; age:=ag;)
 post name = na and gender = ge and age = ag;
 
 public getcardID: () ==> string
-getcardID() == return cardID
+getcardID() == return cardID 
 post RESULT = cardID;
 
 functions
