@@ -42,6 +42,9 @@ store2: Store := new Store("store2", "pizza", "Papa Pizza", "10-30min", 5, prods
 -- Orders
 order1: Order := new Order(user1);
 
+inv stores <> [];
+inv couriers <> [];
+
 operations
 
 public Execution: () ==> Execution
@@ -172,6 +175,7 @@ for store in stores do (
 	return "error";
 )
 pre exists1 order in set elems orders & (order.orderID = orderId and order.state = <INIT>)
+	and products(productIndex).quantity >= numberUnits 
 	and exists user in set elems users & user.email = email 
 	and exists store in set elems stores & store.name = storeName 
 	and products(productIndex) in set elems products;
