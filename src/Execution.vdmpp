@@ -38,6 +38,7 @@ prodsB : seq of Product := [prod2B,prod3B];
 -- Stores
 store1: Store := new Store("store1", "candies", "Candies Store", "10-15min", 1.5, prodsA);
 store2: Store := new Store("store2", "pizza", "Papa Pizza", "10-30min", 5, prodsB);
+store3: Store := new Store("store2", "pizza", "Papa Pizza", "10-30min", 5, prodsB);
 
 -- Orders
 order1: Order := new Order(user1);
@@ -50,7 +51,7 @@ operations
 public Execution: () ==> Execution
 Execution() == ( 
 stores := []; products := []; couriers := []; users := []; orders := []; 
-stores := stores ^ [store1,store2];
+stores := stores ^ [store1,store2,store3];
 products := products ^ [prod1A, prod2A, prod3A];
 couriers := couriers ^ [courier1]; 
 refOrders := {0 |-> -1 };
@@ -302,10 +303,6 @@ pre users <> [];
 public getUsers: () ==> seq of User
 getUsers() == return users
 post RESULT = users;
-
-public getStores: () ==> seq of Store
-getStores() == return stores
-post RESULT = stores;
 
 public getCouriers: () ==> seq of Courier
 getCouriers() == return couriers

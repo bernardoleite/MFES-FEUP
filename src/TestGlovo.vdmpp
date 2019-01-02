@@ -134,6 +134,21 @@ post exists1 userOrder in set elems exec.orders & (userOrder.orderID = orderId a
 
  );
  
+    private test_lists: () ==> ()
+ test_lists() ==
+ (
+ dcl auxRet : string;
+ 
+ auxRet := exec.listCategories();
+ auxRet := exec.listStores("pizza");
+ auxRet := exec.listStoreProducts("store1");
+ auxRet := exec.listOrders("all");
+ auxRet := exec.listUsers();
+ auxRet := exec.listCouriers();
+ 	
+
+ );
+ 
  public static main: () ==> ()
  main() ==
  (
@@ -146,6 +161,7 @@ post exists1 userOrder in set elems exec.orders & (userOrder.orderID = orderId a
 	testGlovo.test_performOrder("maria@glovo.com");
 	testGlovo.test_addUser("newUser@mail.com");
 	testGlovo.test_addCourier("newCourier@glovo.com");
+	testGlovo.test_lists();
 
  );
 
