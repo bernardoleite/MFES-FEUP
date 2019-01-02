@@ -17,7 +17,7 @@ public User: string * User`Address ==> User
 User(em, addr) == (email:=em; address:=addr; return self);
 
 public getEmail: () ==> string
-getEmail() == return email
+getEmail() == return email 
 post RESULT = email;
 
 public getAddress: () ==> Address

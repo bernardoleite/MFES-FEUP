@@ -16,7 +16,7 @@ inv '-' in set elems estimateTime;
 operations
 public Store: string * string * string * string * real * seq of Product ==> Store
 Store(na, ca, des, time, cost, prods) == (name := na; category:=ca; description := des; estimateTime:=time; deliveryCost := cost; products := prods; return self)
-pre cost > 0
+pre cost > 0 
 post deliveryCost = cost;
 
 public addProduct: Product ==> nat
@@ -36,7 +36,7 @@ getProducts() == return products
 post RESULT = products;
 
 public getName: () ==> string
-getName() == return name
+getName() == return name 
 post RESULT = name;
 
 public getCategory: () ==> string

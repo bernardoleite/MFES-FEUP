@@ -13,7 +13,7 @@ protected age : nat := 18;
 operations
 public setPersonInfo: string * Gender * nat ==> ()
 setPersonInfo(na, ge, ag) == is subclass responsibility
-pre ag > 18
+pre ag >= 18
 post age = ag;
 
 public getName: () ==> string

@@ -30,7 +30,10 @@ operations
  order :=  exec.getOrders()(orderIndex);
  	
  assertEqual(currentNumOrders+1,len exec.getOrders());
- );
+ )
+ pre exists user in set elems exec.users & user.email = "blankuser"
+ post exists userOrder in set elems exec.orders & (userOrder.orderID = orderId and order.state = <INIT>);
+ 
  
   private test_AddProductToOrder: () ==> ()
  test_AddProductToOrder() ==
@@ -42,7 +45,11 @@ operations
  dcl newNumberProducts: int :=  len order.getProducts();
  assertEqual(newNumberProducts,numberProducts+1);
 
- );
+ )
+ pre exists1 userOrder in set elems exec.orders & (userOrder.orderID = orderId and userOrder.state = <INIT>)
+	and exists user in set elems exec.users & user.email = "blankuser"
+	and exists store in set elems exec.stores & store.name = "store1"
+	and exec.products(1) in set elems exec.products;
  
   private test_concludeOrder: () ==> ()
  test_concludeOrder() ==
@@ -55,9 +62,12 @@ operations
 	assertTrue(len order.getProducts() > 0);
 	assertTrue(order.getState() = <ORDER_CONCLUDED>);
 
- );
+ )
+ pre exists1 userOrder in set elems exec.orders & (userOrder.orderID = orderId and userOrder.state = <INIT>)
+	and exists1 user in set elems exec.users & user.email = "blankuser"
+post exists userOrder in set elems exec.orders & (userOrder.orderID = orderId and userOrder.state = <ORDER_CONCLUDED>);
  
-   private test_assignCourier: string ==> ()
+  private test_assignCourier: string ==> ()
  test_assignCourier(cardId) ==
  (
  	dcl auxRet : string;
@@ -65,7 +75,10 @@ operations
  	auxRet := exec.assignCourier(cardId,orderId);
 	assertTrue(order.getCourier().getcardID() = cardId);
 
- );
+ )
+pre exists1 userOrder in set elems exec.orders & (userOrder.orderID = orderId and (order.courier = nil or userOrder.courier.cardID <> cardId) and userOrder.state = <ORDER_CONCLUDED>)
+ and exists1 courier in set elems exec.couriers & courier.cardID = cardId
+post exists1 userOrder in set elems exec.orders & (userOrder.orderID = orderId and userOrder.courier.cardID = cardId);
  
    private test_performOrder: string ==> ()
  test_performOrder(cardId) ==
@@ -79,6 +92,10 @@ operations
  	
 	assertTrue(order.getState() = <DELIVERED>);
 
+ )
+ pre (orderId in set dom exec.refOrders
+ and exists1 userOrder in set elems exec.orders & userOrder.orderID = orderId
+ and exists1 courier in set elems exec.couriers & courier.cardID = cardId
  );
  
    private test_addUser: string ==> ()
