@@ -7,6 +7,7 @@ types
 public string = seq of char;
 
 values
+address : User`Address = mk_User`Address("as","as","as","as");
 
 instance variables
 	exec : Execution := new Execution();
@@ -163,6 +164,17 @@ post exists1 userOrder in set elems exec.orders & (userOrder.orderID = orderId a
 	testGlovo.test_addCourier("newCourier@glovo.com");
 	testGlovo.test_lists();
 
- );
 
+ );
+ 
+ traces
+ -- test cases will be generated in possible combinations
+ testaddUsers :
+(let email in set {"email1@hotmail.com","email2@hotmail.com"} in exec.addUser(email,"address","street","1440-100","PT")){1,2};
+
+ testCreateOrders :
+(let email in set {"email1@hotmail.com","email2@hotmail.com"} in exec.createOrder(email)){1,5};
+  
+ 
+	
 end TestGlovo
