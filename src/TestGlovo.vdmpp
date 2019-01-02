@@ -6,6 +6,8 @@ class TestGlovo is subclass of MyTestCase
 types
 public string = seq of char;
 
+values
+
 instance variables
 	exec : Execution := new Execution();
 	orderId: int := 0;
@@ -79,6 +81,42 @@ operations
 
  );
  
+   private test_addUser: string ==> ()
+ test_addUser(email) ==
+ (
+ 	dcl auxRet : string;
+	dcl hasUser : bool := false;
+	for user in exec.getUsers() do ( if user.getEmail() = email then hasUser := true);
+	
+	assertTrue(hasUser = false);
+	
+	auxRet := exec.addUser(email, "Number", "Liberty", "3310-119", "Feuplandia");
+	
+	for user in exec.getUsers() do ( if user.getEmail() = email then hasUser := true);
+	
+	assertTrue(hasUser = true);
+	
+
+ );
+ 
+   private test_addCourier: string ==> ()
+ test_addCourier(cardId) ==
+ (
+ 	dcl auxRet : string;
+	dcl hasCourier : bool := false;
+	for courier in exec.getCouriers() do ( if courier.getcardID() = cardId then hasCourier := true);
+	
+	assertTrue(hasCourier = false);
+	
+	auxRet := exec.addCourier(cardId, 1000);
+	
+	for courier in exec.getCouriers() do ( if courier.getcardID() = cardId then hasCourier := true);
+	
+	assertTrue(hasCourier = true);
+	
+
+ );
+ 
  public static main: () ==> ()
  main() ==
  (
@@ -89,6 +127,8 @@ operations
 	testGlovo.test_concludeOrder();
 	testGlovo.test_assignCourier("maria@glovo.com");
 	testGlovo.test_performOrder("maria@glovo.com");
+	testGlovo.test_addUser("newUser@mail.com");
+	testGlovo.test_addCourier("newCourier@glovo.com");
 
  );
 
