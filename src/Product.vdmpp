@@ -8,6 +8,7 @@ private name : string;
 private price : real := 0.1;
 private description : string;
 private quantity: nat;
+private store: Store;
 private orders : set of Order := {};
 
 operations
@@ -44,6 +45,12 @@ post RESULT = description;
 pure public getStock: () ==> nat
 getStock() == return quantity 
 post RESULT = quantity;
+
+public setStore: Store ==> int
+setStore(storeOfProduct) == (store := storeOfProduct; return 1;);
+
+pure public getStore: () ==> Store
+getStore() == (return store;);
 
 functions
 

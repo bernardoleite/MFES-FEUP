@@ -232,9 +232,11 @@ pre exists user in set elems users & user.getEmail() = email
 	and exists order in set elems orders & order.getId() = orderId;
 
 
-public cloneProd: Product * nat ==> Product
-cloneProd(refProd, numberUnits) == ( 
+public cloneProd: Product * nat * Store ==> Product
+cloneProd(refProd, numberUnits, storeRef) == ( 
+dcl auxRet : int ;
 dcl newProd : Product := new Product(refProd.getName(), refProd.getPrice(), refProd.getDescription(), numberUnits);
+auxRet := newProd.setStore(storeRef);
 return newProd;
 )
 post refProd.getName() = RESULT.getName() and refProd.getPrice() = RESULT.getPrice() and refProd.getDescription() = RESULT.getDescription();
@@ -246,7 +248,7 @@ for store in stores do (
  ( 
  	dcl auxRet : int ;
  	dcl refProd : Product := store.getProduct(productIndex); 
- 	dcl newProd : Product := cloneProd(refProd, numberUnits);
+ 	dcl newProd : Product := cloneProd(refProd, numberUnits, store);
  	dcl newStock : nat := refProd.removeStock(numberUnits);
  	for order in orders do ( 
 		if order.getId() = orderId then
@@ -266,6 +268,45 @@ pre exists1 order in set elems orders & (order.getId() = orderId and order.getSt
 	and exists store in set elems stores & store.getName() = storeName 
 	and products(productIndex) in set elems products;
 
+
+public removeProductFromOrder: int  * int  ==> string
+removeProductFromOrder(orderId, productIndex) == ( 
+dcl refOrder : Order ;
+dcl numberUnits : nat ;
+dcl refProduct : Product ;
+dcl productName : string ;
+dcl orderProducts : seq of Product ;
+dcl newProdsList : seq of Product ;
+newProdsList := [];
+
+ 	for order in orders do ( 
+		if order.getId() = orderId then
+			(
+			refOrder := order;
+			orderProducts := order.getProducts();
+			productName := order.products(productIndex).getName();
+			refProduct := order.products(productIndex);
+			numberUnits := products(productIndex).getStock();
+			)  
+		);
+		
+	for prod in orderProducts do ( 
+		if prod.getName() <> productName then
+			(
+				newProdsList := newProdsList ^ [prod];
+				refOrder.products := newProdsList;
+			)  
+		);
+		
+	for store in stores do ( 
+		if store.getName() = refProduct.getStore().getName() then
+			(
+				for currProd in store.getProducts() do (if currProd.getName() = productName then currProd.addStock(numberUnits));
+			)  
+		);
+		
+return "Result: success";
+);
 
 public concludeOrder: string * int ==> string
 concludeOrder(email, orderId) == ( 

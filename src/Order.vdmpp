@@ -7,7 +7,7 @@ values
 instance variables
 private orderID:  int;
 private totalCost : real;
-private products : seq of Product;
+public products : seq of Product;
 public courier : [Courier] :=nil;
 private user : User;
 private state: State;
