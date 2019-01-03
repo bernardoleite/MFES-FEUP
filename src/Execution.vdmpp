@@ -404,6 +404,21 @@ return "Result: success";
 )
 pre orders <> [];
 
+public listOrdersByCourier: string  ==> string
+listOrdersByCourier(cardId) == 
+( 
+for order in orders do (if order.getCourier().getCardID() = cardId then
+	(IO`print("Order: "); IO`println(order.getId()););
+	(IO`print("State: "); IO`println(order.getState()););
+	(IO`print("Client: "); IO`println(order.getUser()););
+	(IO`print("Total Cost: "); IO`println(order.getTotalCost()););
+	IO`println("\n");
+);
+
+IO`println("\n");
+return "Result: success";
+);
+
 public listCategories: () ==> string
 listCategories() == 
 (
