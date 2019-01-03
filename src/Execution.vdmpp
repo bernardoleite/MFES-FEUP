@@ -91,6 +91,24 @@ return "Result: Courier added to Couriers list.";
 )
 pre not exists courier in set elems couriers & courier.cardID= idCard;
 
+public increaseProductStock: string * int * int ==> string
+increaseProductStock(storeName, productIndex, unitsToAdd) == ( 
+for store in stores do (
+	if store.getName()=storeName then ( 
+	   dcl product : Product;
+	   product := store.getProduct(productIndex); 
+		 product.quantity := product.quantity + unitsToAdd;
+		 IO`print("Product: "); IO`println(product.getName()); 
+		 IO`print("Added Units: "); IO`println(unitsToAdd); 
+		 IO`print("Current Stock: "); IO`println(product.getStock()); 
+		 return "Result: Success."; 
+		 );
+);
+return "No store/product found."; 
+);
+
+
+
 public performOrder: string * int ==> string
 performOrder(courierID, orderID) == ( 
  dcl auxCourier : Courier ;
@@ -275,6 +293,7 @@ IO`println("Products of: " ^ storeName);
 	for auxProd in auxProducts do ( 
 		IO`print(countProds); IO`println(" Name: " ^ auxProd.getName() ^ ". Description: " ^ auxProd.getDescription());
 		IO`print("Unit Price: " ); IO`println(auxProd.getPrice());
+		IO`print("Stock: " ); IO`println(auxProd.getStock());
 		countProds:=countProds+1;
 	);
 	
@@ -342,13 +361,13 @@ functions
  traces
 -- TODO Define Combinatorial Test Traces here
 end Execution
-
 -- create t := new Execution()
 -- print t.createOrder("bernas@hotmail.com")
 -- print t.addProductToOrder("bernas@hotmail.com",XXXX,"store1",1,1)
 -- print t.concludeOrder("bernas@hotmail.com",XXXX)
 -- print t.assignCourier("maria@glovo.com",XXXX)
 -- print t.performOrder("maria@glovo.com",XXXX)
+-- print t.increaseProductStock("store1",1,2)
 -- print t.getUser1().setPersonInfo("Teste", <Male>, 20)
 -- print t.getUser1()
 -- print t.getStore1().addProduct(t.getProduct1())
