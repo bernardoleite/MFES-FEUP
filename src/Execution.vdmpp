@@ -197,6 +197,25 @@ for user in users do (
 )
 pre exists user in set elems users & user.getEmail() = email;
 
+public cancelOrder: int ==> string
+cancelOrder(orderId) == ( 
+
+dcl newRefOrders : map int to int;
+dcl newOrders : seq of Order; 
+newOrders := [];
+newRefOrders := {0 |-> -1 };
+
+for order in orders do ( 
+		if(order.getId() <> orderId) then (
+		newOrders := newOrders^[order];
+		newRefOrders := newRefOrders ++ {order.getId() |-> len newOrders };
+		);
+	);
+
+orders := newOrders;
+refOrders := newRefOrders;
+return "Success: Order Canceled";
+);
 
 public deleteOrder: string * int ==> int
 deleteOrder(email, orderId) == ( 
