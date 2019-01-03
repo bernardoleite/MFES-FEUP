@@ -28,17 +28,44 @@ courier1 : Courier := new Courier("maria@glovo.com", 800);
 prod1A : Product := new Product("Rabanada", 2.5, "Rabanada de Convento", 5);
 prod2A : Product := new Product("Bolina", 1.5, "Docinho de Bolina", 10);
 prod3A : Product := new Product("Bolo Rei", 3.99, "Bolo Rei sem frutos", 6);
-prodsA : seq of Product := [prod2A,prod3A];
+prodsA : seq of Product := [prod1A,prod2A,prod3A];
 
 prod1B : Product := new Product("Pizza Tropical", 10, "Pizza com ananas", 3);
 prod2B : Product := new Product("Pizza Funghi", 7, "Pizza com cogumelos", 8);
 prod3B : Product := new Product("Pizza Margherita", 6.5, "Pizza normal", 2);
-prodsB : seq of Product := [prod2B,prod3B];
+prodsB : seq of Product := [prod1B,prod2B,prod3B];
+
+prod1C : Product := new Product("Sashimi", 30, "Peixe Sashimi", 3);
+prod2C : Product := new Product("Hosomaki", 41, "Peixe Hosomaki", 8);
+prod3C : Product := new Product("Uramaki", 90, "Peixe com Arrroz", 2);
+prod4C : Product := new Product("Hot Roll", 19, "Sushi Nuggets", 2);
+prodsC : seq of Product := [prod1C,prod2C,prod3C,prod4C];
+
+prod1D : Product := new Product("Penso Rápido", 10, "Pensos", 7);
+prod2D : Product := new Product("Ben-u-ron", 20, "Benuron 1000mg", 8);
+prod3D : Product := new Product("Akiliever", 50, "Melhor creme para as mãos", 18);
+prod4D : Product := new Product("Nivea", 19, "Creme corporal", 9);
+prodsD : seq of Product := [prod1D,prod2D,prod3D,prod4D];
+
+prod1E : Product := new Product("Croissant", 4, "Croissa Simples", 4);
+prod2E : Product := new Product("Lanche", 11, "Lanche Misto", 6);
+prod3E : Product := new Product("Tapioca", 2, "Sobremesa", 5);
+prod4E : Product := new Product("Mini Francesinha", 9, "Francesinha tapa", 11);
+prodsE : seq of Product := [prod1E,prod2E,prod3E,prod4E];
+
+prod1F : Product := new Product("Bolo Chocolate", 5, "O melhor bolo do mundo", 5);
+prod2F : Product := new Product("Dolce Bolinho", 12, "Especialidade da Casa", 10);
+prod3F : Product := new Product("Camarao", 21, "Camarao lindo", 13);
+prod4F : Product := new Product("Tosta Alentejana", 91, "Tosta Alentejana com oregaos", 6);
+prodsF : seq of Product := [prod1F,prod2F,prod3F,prod4F];
 
 -- Stores
 store1: Store := new Store("store1", "candies", "Candies Store", "10-15min", 1.5, prodsA);
 store2: Store := new Store("store2", "pizza", "Papa Pizza", "10-30min", 5, prodsB);
-store3: Store := new Store("store2", "pizza", "Papa Pizza", "10-30min", 5, prodsB);
+store3: Store := new Store("store3", "sushi", "Sushi For Life", "10-15min", 9, prodsC);
+store4: Store := new Store("store4", "pharmacy", "Pharmacy Feupy", "10-40min", 20, prodsD);
+store5: Store := new Store("store5", "snacks", "Divino Rosa", "6-12min", 6, prodsE);
+store6: Store := new Store("store6", "snacks", "Divino Rosalino", "3-6min", 7, prodsF);
 
 -- Orders
 order1: Order := new Order(user1);
@@ -51,7 +78,7 @@ operations
 public Execution: () ==> Execution
 Execution() == ( 
 stores := []; products := []; couriers := []; users := []; orders := []; 
-stores := stores ^ [store1,store2,store3];
+stores := stores ^ [store1,store2,store3,store4,store5,store6];
 products := products ^ [prod1A, prod2A, prod3A];
 couriers := couriers ^ [courier1]; 
 refOrders := {0 |-> -1 };
@@ -272,10 +299,11 @@ public listStores: string ==> string
 listStores(categoryName) == 
 (
 IO`println("Stores with Category: " ^ categoryName);
-for store in stores do (
-	if store.getCategory() = categoryName then (IO`println("Store: " ^ store.getName()); return "Result: success")
-);
-return "Result: error on listing store";
+for store in stores do  
+	(
+	if store.getCategory() = categoryName then (IO`println("Store: " ^ store.getName() ^ ". Description: " ^ store.getDescription()));
+	);
+return "Result: sucess";
 )
 pre categoryName in set categories and stores <> [];
 
@@ -283,7 +311,7 @@ public listStoreProducts: string ==> string
 listStoreProducts(storeName) == 
 (
 dcl auxProducts : seq of Product ;
-dcl countProds : int := 0;
+dcl countProds : int := 1;
 
 IO`println("Products of: " ^ storeName);
 	for store in stores do ( 
