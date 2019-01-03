@@ -524,6 +524,7 @@ post RESULT = refOrders;
 -- cancel order
 -- add product to order
 -- close order
+-- remove Product from Order
 
 -- !ADMIN/ROBOT --
 -- list all users
@@ -549,6 +550,3 @@ end Execution
 -- print t.assignCourier("maria@glovo.com",XXXX)
 -- print t.performOrder("maria@glovo.com",XXXX)
 -- print t.increaseProductStock("store1",1,2)
--- print t.getUser1().setPersonInfo("Teste", <Male>, 20)
--- print t.getUser1()
--- print t.getStore1().addProduct(t.getProduct1())

@@ -3,6 +3,7 @@ types
 public string = seq of char;
 values
 -- TODO Define values here
+
 instance variables
 private name : string;
 private price : real := 0.1;
@@ -10,6 +11,8 @@ private description : string;
 private quantity: nat;
 private store: Store;
 private orders : set of Order := {};
+
+inv price >= 0.0 and quantity > 0;
 
 operations
 public Product: string * real * string * nat ==> Product
