@@ -9,18 +9,18 @@ public Address :: address : string
 	
 values
 instance variables
-public email : string;
+private email : string;
 private address: Address;
 
 operations
 public User: string * User`Address ==> User
 User(em, addr) == (email:=em; address:=addr; return self);
 
-public getEmail: () ==> string
+pure public getEmail: () ==> string
 getEmail() == return email 
 post RESULT = email;
 
-public getAddress: () ==> Address
+pure public getAddress: () ==> Address
 getAddress() == return address
 post RESULT = address;
 

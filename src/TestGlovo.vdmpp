@@ -32,8 +32,8 @@ operations
  	
  assertEqual(currentNumOrders+1,len exec.getOrders());
  )
- pre exists user in set elems exec.users & user.email = "blankuser"
- post exists userOrder in set elems exec.orders & (userOrder.orderID = orderId and order.state = <INIT>);
+ pre exists user in set elems exec.users & user.getEmail() = "blankuser"
+ post exists userOrder in set elems exec.orders & (userOrder.getId() = orderId and order.getState() = <INIT>);
  
  
   private test_AddProductToOrder: () ==> ()
@@ -47,9 +47,9 @@ operations
  assertEqual(newNumberProducts,numberProducts+1);
 
  )
- pre exists1 userOrder in set elems exec.orders & (userOrder.orderID = orderId and userOrder.state = <INIT>)
-	and exists user in set elems exec.users & user.email = "blankuser"
-	and exists store in set elems exec.stores & store.name = "store1"
+ pre exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId and userOrder.getState() = <INIT>)
+	and exists user in set elems exec.users & user.getEmail() = "blankuser"
+	and exists store in set elems exec.stores & store.getName() = "store1"
 	and exec.products(1) in set elems exec.products;
  
   private test_concludeOrder: () ==> ()
@@ -64,9 +64,9 @@ operations
 	assertTrue(order.getState() = <ORDER_CONCLUDED>);
 
  )
- pre exists1 userOrder in set elems exec.orders & (userOrder.orderID = orderId and userOrder.state = <INIT>)
-	and exists1 user in set elems exec.users & user.email = "blankuser"
-post exists userOrder in set elems exec.orders & (userOrder.orderID = orderId and userOrder.state = <ORDER_CONCLUDED>);
+ pre exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId and userOrder.getState() = <INIT>)
+	and exists1 user in set elems exec.users & user.getEmail() = "blankuser"
+post exists userOrder in set elems exec.orders & (userOrder.getId() = orderId and userOrder.getState() = <ORDER_CONCLUDED>);
  
   private test_assignCourier: string ==> ()
  test_assignCourier(cardId) ==
@@ -74,19 +74,19 @@ post exists userOrder in set elems exec.orders & (userOrder.orderID = orderId an
  	dcl auxRet : string;
  	
  	auxRet := exec.assignCourier(cardId,orderId);
-	assertTrue(order.getCourier().getcardID() = cardId);
+	assertTrue(order.getCourier().getCardID() = cardId);
 
  )
-pre exists1 userOrder in set elems exec.orders & (userOrder.orderID = orderId and (order.courier = nil or userOrder.courier.cardID <> cardId) and userOrder.state = <ORDER_CONCLUDED>)
- and exists1 courier in set elems exec.couriers & courier.cardID = cardId
-post exists1 userOrder in set elems exec.orders & (userOrder.orderID = orderId and userOrder.courier.cardID = cardId);
+pre exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId and (order.courier = nil or userOrder.getCourier().getCardID() <> cardId) and userOrder.getState() = <ORDER_CONCLUDED>)
+ and exists1 courier in set elems exec.couriers & courier.getCardID() = cardId
+post exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId and userOrder.getCourier().getCardID() = cardId);
  
    private test_performOrder: string ==> ()
  test_performOrder(cardId) ==
  (
  	dcl auxRet : string;
  	
- 	assertTrue(order.getCourier().getcardID() = cardId);
+ 	assertTrue(order.getCourier().getCardID() = cardId);
  	assertTrue(order.getState() = <ORDER_CONCLUDED>);
  	
  	auxRet := exec.performOrder(cardId,orderId);
@@ -95,8 +95,8 @@ post exists1 userOrder in set elems exec.orders & (userOrder.orderID = orderId a
 
  )
  pre (orderId in set dom exec.refOrders
- and exists1 userOrder in set elems exec.orders & userOrder.orderID = orderId
- and exists1 courier in set elems exec.couriers & courier.cardID = cardId
+ and exists1 userOrder in set elems exec.orders & userOrder.getId() = orderId
+ and exists1 courier in set elems exec.couriers & courier.getCardID() = cardId
  );
  
    private test_addUser: string ==> ()
@@ -122,13 +122,13 @@ post exists1 userOrder in set elems exec.orders & (userOrder.orderID = orderId a
  (
  	dcl auxRet : string;
 	dcl hasCourier : bool := false;
-	for courier in exec.getCouriers() do ( if courier.getcardID() = cardId then hasCourier := true);
+	for courier in exec.getCouriers() do ( if courier.getCardID() = cardId then hasCourier := true);
 	
 	assertTrue(hasCourier = false);
 	
 	auxRet := exec.addCourier(cardId, 1000);
 	
-	for courier in exec.getCouriers() do ( if courier.getcardID() = cardId then hasCourier := true);
+	for courier in exec.getCouriers() do ( if courier.getCardID() = cardId then hasCourier := true);
 	
 	assertTrue(hasCourier = true);
 	

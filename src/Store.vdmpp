@@ -4,7 +4,7 @@ public string = seq of char;
 values
 -- TODO Define values here
 instance variables
-public name : string;
+private name : string;
 private category : string;
 private description : string;
 private estimateTime : string;
@@ -27,31 +27,31 @@ return len products;
 pre p not in set elems products
 post p in set elems products;
 
-public getProduct: int ==> Product
+pure public getProduct: int ==> Product
 getProduct(productIndex) == return products(productIndex)
 post RESULT = products(productIndex);
 
-public getProducts: () ==> seq of Product
+pure public getProducts: () ==> seq of Product
 getProducts() == return products
 post RESULT = products;
 
-public getName: () ==> string
+pure public getName: () ==> string
 getName() == return name 
 post RESULT = name;
 
-public getCategory: () ==> string
+pure public getCategory: () ==> string
 getCategory() == return category 
 post RESULT = category;
 
-public getDescription: () ==> string
+pure public getDescription: () ==> string
 getDescription() == return description 
 post RESULT = description;
 
-public getEstimateTime: () ==> string
+pure public getEstimateTime: () ==> string
 getEstimateTime() == return estimateTime 
 post RESULT = estimateTime;
 
-public getDeliveryCost: () ==> real
+pure public getDeliveryCost: () ==> real
 getDeliveryCost() == return deliveryCost 
 post RESULT = deliveryCost;
 

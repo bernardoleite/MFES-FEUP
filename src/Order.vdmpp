@@ -5,12 +5,12 @@ public State = <INIT> | <ORDER_CONCLUDED> | <DELIVERED> ;
 values
 -- TODO Define values here
 instance variables
-public orderID:  int;
+private orderID:  int;
 private totalCost : real;
 private products : seq of Product;
 public courier : [Courier] :=nil;
 private user : User;
-public state: State;
+private state: State;
 
 operations
 public Order: User ==> Order
@@ -25,19 +25,18 @@ return self
 
 public addProduct: Product ==> int
 addProduct(newProd) == (
-dcl auxRet : nat ;
 for prod in products do 
 ( 
-if prod.getName() = newProd.getName() then (auxRet:=prod.addStock(newProd.getStock()); return 1;) 
+if prod.getName() = newProd.getName() then (prod.addStock(newProd.getStock()); return 1;) 
 );
 products := products ^ [newProd];
 return 1;
 )
-pre newProd.quantity > 0;
+pre newProd.getStock() > 0;
 
 public deliverOrder: string ==> int
 deliverOrder(courierID) == ( 
-if courier.getcardID() = courierID then (state := <DELIVERED>;)
+if courier.getCardID() = courierID then (state := <DELIVERED>;)
 else return -1;
 return 1;
 )
@@ -57,27 +56,27 @@ setCourier(assignedCourier) == (courier:=assignedCourier; return 1;)
 pre courier <> assignedCourier 
 post courier=assignedCourier;
 
-public getId: () ==> int
+pure public getId: () ==> int
 getId() == return orderID 
 post RESULT = orderID;
 
-public getTotalCost: () ==> real
+pure public getTotalCost: () ==> real
 getTotalCost() == return totalCost 
 post RESULT = totalCost;
 
-public getProducts: () ==> seq of Product
+pure public getProducts: () ==> seq of Product
 getProducts() == return products 
 post RESULT = products;
 
-public getCourier: () ==> Courier
+pure public getCourier: () ==> Courier
 getCourier() == return courier 
 post RESULT = courier;
 
-public getUser: () ==> User
+pure public getUser: () ==> User
 getUser() == return user 
 post RESULT = user;
 
-public getState: () ==> State
+pure public getState: () ==> State
 getState() == return state 
 post RESULT = state;
 

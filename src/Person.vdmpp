@@ -16,15 +16,15 @@ setPersonInfo(na, ge, ag) == is subclass responsibility
 pre ag >= 18
 post age = ag;
 
-public getName: () ==> string
+pure public getName: () ==> string
 getName() == return name
 post RESULT = name;
 
-public getGender: () ==> Gender
+pure public getGender: () ==> Gender
 getGender() == return gender
 post RESULT = gender;
 
-public getAge: () ==> nat
+pure public getAge: () ==> nat
 getAge() == return age
 post RESULT = age;
 

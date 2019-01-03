@@ -114,7 +114,7 @@ dcl newUser : User := new User(email, newAddress);
 users := users ^ [newUser];
 return "Result: User added to Users list.";
 )
-pre not exists user in set elems users & user.email= email;
+pre not exists user in set elems users & user.getEmail()= email;
 
 public addCourier: string * int ==> string
 addCourier(idCard, salary) == ( 
@@ -122,7 +122,7 @@ dcl newCourier : Courier := new Courier(idCard, salary);
 couriers := couriers ^ [newCourier];
 return "Result: Courier added to Couriers list.";
 )
-pre not exists courier in set elems couriers & courier.cardID= idCard;
+pre not exists courier in set elems couriers & courier.getCardID()= idCard;
 
 public increaseProductStock: string * int * int ==> string
 increaseProductStock(storeName, productIndex, unitsToAdd) == ( 
@@ -130,7 +130,7 @@ for store in stores do (
 	if store.getName()=storeName then ( 
 	   dcl product : Product;
 	   product := store.getProduct(productIndex); 
-		 product.quantity := product.quantity + unitsToAdd;
+		 product.addStock(unitsToAdd);
 		 IO`print("Product: "); IO`println(product.getName()); 
 		 IO`print("Added Units: "); IO`println(unitsToAdd); 
 		 IO`print("Current Stock: "); IO`println(product.getStock()); 
@@ -146,7 +146,7 @@ public performOrder: string * int ==> string
 performOrder(courierID, orderID) == ( 
  dcl auxCourier : Courier ;
  dcl auxReturn: int ;
- for courier in couriers do  (if(courier.getcardID()=courierID) then auxCourier := courier; );
+ for courier in couriers do  (if(courier.getCardID()=courierID) then auxCourier := courier; );
  for order in orders do ( 
  	if order.getId() = orderID then auxReturn := order.deliverOrder(courierID);
  	);
@@ -156,28 +156,28 @@ IO`println("By Courier: " ^ courierID);
 return "Result: success";
 )
 pre (orderID in set dom refOrders 
- and exists1 order in set elems orders & order.orderID = orderID 
- and exists1 courier in set elems couriers & courier.cardID = courierID 
- and order.state = <ORDER_CONCLUDED> 
- and order.courier.cardID = courierID 
+ and exists1 order in set elems orders & order.getId() = orderID 
+ and exists1 courier in set elems couriers & courier.getCardID() = courierID 
+ and order.getState() = <ORDER_CONCLUDED> 
+ and order.getCourier().getCardID() = courierID 
  )
-post exists order in set elems orders & (order.orderID = orderID and order.state = <DELIVERED>);
+post exists order in set elems orders & (order.getId() = orderID and order.getState() = <DELIVERED>);
 
 public assignCourier: string * int ==> string
 assignCourier(courierID, orderID) == ( 
  dcl auxCourier : Courier ;
  dcl auxReturn: int ;
- for courier in couriers do  (if(courier.getcardID()=courierID) then auxCourier := courier; );
+ for courier in couriers do  (if(courier.getCardID()=courierID) then auxCourier := courier; );
  for order in orders do ( 
  	if order.getId() = orderID then auxReturn:=order.setCourier(auxCourier);
  	);
 IO`print("Order: "); IO`println(orderID); 
 IO`print("Assigned Courier: "); IO`println(courierID); 
 return "Result: success";
-)
-pre exists1 order in set elems orders & (order.orderID = orderID and (order.courier = nil or order.courier.cardID <> courierID) and order.state = <ORDER_CONCLUDED>)
- and exists1 courier in set elems couriers & courier.cardID = courierID 
-post exists1 order in set elems orders & (order.orderID = orderID and order.courier.cardID = courierID);
+) 
+pre exists1 order in set elems orders & (order.getId() = orderID and (order.courier = nil or order.getCourier().getCardID() <> courierID) and order.getState() = <ORDER_CONCLUDED>)
+ and exists1 courier in set elems couriers & courier.getCardID() = courierID 
+post exists1 order in set elems orders & (order.getId() = orderID and order.getCourier().getCardID() = courierID);
  
 public createOrder: string ==> int
 createOrder(email) == ( 
@@ -195,7 +195,22 @@ for user in users do (
 		);
 	return -1;
 )
-pre exists user in set elems users & user.email = email;
+pre exists user in set elems users & user.getEmail() = email;
+
+
+public deleteOrder: string * int ==> int
+deleteOrder(email, orderId) == ( 
+for user in users do ( 
+		if user.getEmail() = email then
+			( 
+			return 0;
+				--stuff here
+			) 
+		);
+	return -1;
+)
+pre exists user in set elems users & user.getEmail() = email
+	and exists order in set elems orders & order.getId() = orderId;
 
 
 public cloneProd: Product * nat ==> Product
@@ -203,7 +218,7 @@ cloneProd(refProd, numberUnits) == (
 dcl newProd : Product := new Product(refProd.getName(), refProd.getPrice(), refProd.getDescription(), numberUnits);
 return newProd;
 )
-post refProd.name = RESULT.name and refProd.price = RESULT.price and refProd.description = RESULT.description;
+post refProd.getName() = RESULT.getName() and refProd.getPrice() = RESULT.getPrice() and refProd.getDescription() = RESULT.getDescription();
 
 public addProductToOrder: string * int * string * int * nat ==> string
 addProductToOrder(email, orderId, storeName, productIndex, numberUnits) == ( 
@@ -226,10 +241,10 @@ for store in stores do (
  ) );
 	return "error";
 )
-pre exists1 order in set elems orders & (order.orderID = orderId and order.state = <INIT>)
-	and products(productIndex).quantity >= numberUnits 
-	and exists user in set elems users & user.email = email 
-	and exists store in set elems stores & store.name = storeName 
+pre exists1 order in set elems orders & (order.getId() = orderId and order.getState() = <INIT>)
+	and products(productIndex).getStock() >= numberUnits 
+	and exists user in set elems users & user.getEmail() = email 
+	and exists store in set elems stores & store.getName() = storeName 
 	and products(productIndex) in set elems products;
 
 
@@ -249,9 +264,9 @@ for order in orders do (
 
 	return "error";
 )
-pre exists1 order in set elems orders & (order.orderID = orderId and order.state = <INIT>)
-	and exists1 user in set elems users & user.email = email 
-post exists order in set elems orders & (order.orderID = orderId and order.state = <ORDER_CONCLUDED>);
+pre exists1 order in set elems orders & (order.getId() = orderId and order.getState() = <INIT>)
+	and exists1 user in set elems users & user.getEmail() = email 
+post exists order in set elems orders & (order.getId() = orderId and order.getState() = <ORDER_CONCLUDED>);
 
 public populateDB: () ==> nat
 populateDB() == (
@@ -371,12 +386,12 @@ IO`println("Products of: " ^ storeName);
 	
 return "Result: success";
 )
-pre exists1 store in set elems stores & store.name = storeName and stores <> [];
+pre exists1 store in set elems stores & store.getName() = storeName and stores <> [];
 
 public listCouriers: () ==> string
 listCouriers() == 
 (
-for courier in couriers do (IO`println("Courier ID: " ^ courier.getcardID()););
+for courier in couriers do (IO`println("Courier ID: " ^ courier.getCardID()););
 return "Result: success";
 )
 pre couriers <> [];
