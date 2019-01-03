@@ -40,19 +40,19 @@ getName() == return name
 post RESULT = name;
 
 public getCategory: () ==> string
-getCategory() == return category
+getCategory() == return category 
 post RESULT = category;
 
 public getDescription: () ==> string
-getDescription() == return description
+getDescription() == return description 
 post RESULT = description;
 
 public getEstimateTime: () ==> string
-getEstimateTime() == return estimateTime
+getEstimateTime() == return estimateTime 
 post RESULT = estimateTime;
 
 public getDeliveryCost: () ==> real
-getDeliveryCost() == return deliveryCost
+getDeliveryCost() == return deliveryCost 
 post RESULT = deliveryCost;
 
 functions

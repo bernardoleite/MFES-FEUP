@@ -144,9 +144,13 @@ post exists1 userOrder in set elems exec.orders & (userOrder.orderID = orderId a
  auxRet := exec.listStores("pizza");
  auxRet := exec.listStoreProducts("store1");
  auxRet := exec.listOrders("all");
+ auxRet := exec.listOrders("blankuser");
+ auxRet := exec.listOrdersDelivered("all");
+ auxRet := exec.listOrdersDelivered("blankuser");
+ auxRet := exec.listOrdersDelivered("blankuser");
  auxRet := exec.listUsers();
  auxRet := exec.listCouriers();
- 	
+ auxRet := exec.listStoresWithDeliveryCost(3);
 
  );
  

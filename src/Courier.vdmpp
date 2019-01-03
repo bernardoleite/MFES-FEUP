@@ -22,6 +22,10 @@ public getcardID: () ==> string
 getcardID() == return cardID 
 post RESULT = cardID;
 
+public getSalary: () ==> int
+getSalary() == return salary 
+post RESULT = salary;
+
 functions
 -- TODO Define functiones here
 traces

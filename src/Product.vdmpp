@@ -32,19 +32,19 @@ pre numberUnits > 0
 post RESULT = quantity;
 
 public getName: () ==> string
-getName() == return name
+getName() == return name 
 post RESULT = name;
 
 public getPrice: () ==> real
-getPrice() == return price
+getPrice() == return price 
 post RESULT = price;
 
 public getDescription: () ==> string
-getDescription() == return description
+getDescription() == return description 
 post RESULT = description;
 
 public getStock: () ==> nat
-getStock() == return quantity
+getStock() == return quantity 
 post RESULT = quantity;
 
 functions
