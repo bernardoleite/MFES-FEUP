@@ -135,7 +135,7 @@ for store in stores do (
 		 IO`print("Product: "); IO`println(product.getName()); 
 		 IO`print("Added Units: "); IO`println(unitsToAdd); 
 		 IO`print("Current Stock: "); IO`println(product.getStock()); 
-		 return "Result: Success"; 
+		 return "Result: success"; 
 		 );
 );
 return "No store/product found."; 
