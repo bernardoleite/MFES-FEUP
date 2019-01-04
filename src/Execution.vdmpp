@@ -87,6 +87,14 @@ users := users ^ [user0,user1,user2];
 categories :=  {"pizza", "snacks", "candies", "pharmacy", "sushi"};
 IO`println("Welcome to Feup-Glovo App! Made by MFES Brothers."); 
 IO`println("Here is what you can do:"); 
+IO`println("Add a User: print t.addUser(email, address, street, zip-code, country)");
+IO`println("Add a Courier: print t.addCourier(cardID,salary)");
+IO`println("Create an Order : print t.createOrder(name@mail.com)");
+IO`println("Add Product to Order : print t.addProductToOrder(name@mail.com,OrderID,storeName,productIndex,numberUnits)");
+IO`println("Conclude your order: print t.concludeOrder(name@mail.com,OrderID)");
+IO`println("Assign a Courier to your order: print t.assignCourier(courier@glovo.com,OrderID)");
+IO`println("Perform an Order : print t.performOrder(courier@glovo.com,OrderID)");
+IO`println("Set Person Info: print t.user1(name, gender, age)");
 IO`println("List Categories : print t.listCategories()");
 IO`println("List Stores by Category : print t.listStores(CategoryName)");
 IO`println("List Stores by DeliveryCost : print t.listStoresWithDeliveryCost(CategoryName)");
@@ -95,15 +103,7 @@ IO`println("List Orders : print t.listOrders(request) -> request can be all or U
 IO`println("List Delivered Orders : print t.listOrdersDelivered(request) -> request can be all or UserEmail");
 IO`println("List Users : print t.listUsers()");
 IO`println("List Couriers : print t.listCouriers()");
-IO`println("Create an Order : print t.createOrder(name@mail.com)");
-IO`println("Add Product to Order : print t.addProductToOrder(name@mail.com,OrderID,storeName,productIndex,numberUnits)");
-IO`println("Conclude your order: print t.concludeOrder(name@mail.com,OrderID)");
-IO`println("Assign a Courier to your order: print t.assignCourier(courier@glovo.com,OrderID)");
-IO`println("Perform an Order : print t.performOrder(courier@glovo.com,OrderID)");
 IO`println("Check earned money from a store: print t.earnedMoneyFromStore(storeName)");
-IO`println("Add a User: print t.addUser(email, address, street, zip-code, country)");
-IO`println("Add a Courier: print t.addCourier(cardID,salary)");
-IO`println("Set Person Info: print t.user1(name, gender, age)");
 return self 
 )
 post RESULT = self;
