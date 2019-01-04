@@ -2,6 +2,7 @@ class Execution
 
 types
 public string = seq of char;
+public Gender = <Male> | <Female> | <Undefined>;
 
 values
 address1 : User`Address = mk_User`Address("as","as","as","as");
@@ -507,6 +508,17 @@ for store in stores do(
 	return 0;
 )
 pre orders <> [];
+
+public editProfile: string * string * Gender * nat ==> string
+editProfile(email, name, gender, age) == ( 
+
+for user in users do (
+	if user.getEmail() = email then user.setPersonInfo(name,gender,age) 
+);
+return "Result: success";
+
+);
+
 																										/***** GET OPERATORS ******/
 
 public getUsers: () ==> seq of User

@@ -35,6 +35,31 @@ operations
  pre exists user in set elems exec.users & user.getEmail() = "blankuser"
  post exists userOrder in set elems exec.orders & (userOrder.getId() = orderId and order.getState() = <INIT>);
  
+  private test_cancelOrder: () ==> ()
+ test_cancelOrder() ==
+ (
+ dcl currentRefOrders: map int to int;
+ dcl orderIndex: nat;
+ dcl auxRet: string;
+
+ dcl currentNumOrders: int :=  len exec.getOrders();
+ orderId := exec.createOrder("blankuser");
+ 
+ currentRefOrders :=  exec.getrefOrders();
+ orderIndex := currentRefOrders(orderId);
+ order :=  exec.getOrders()(orderIndex);
+ 	
+ assertEqual(currentNumOrders+1,len exec.getOrders());
+ 
+ auxRet := exec.cancelOrder(order.getId());
+ 
+ currentNumOrders := len exec.getOrders();
+ 
+ IO`println(currentNumOrders);
+ 
+ assertEqual(currentNumOrders,1);
+ );
+ 
  
   private test_AddProductToOrder: () ==> ()
  test_AddProductToOrder() ==
@@ -85,11 +110,13 @@ post exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId a
  test_performOrder(cardId) ==
  (
  	dcl auxRet : string;
+ 	dcl totalMoney : real;
  	
  	assertTrue(order.getCourier().getCardID() = cardId);
  	assertTrue(order.getState() = <ORDER_CONCLUDED>);
  	
  	auxRet := exec.performOrder(cardId,orderId);
+ 	totalMoney := exec.earnedMoneyFromStore("store1");
  	
 	assertTrue(order.getState() = <DELIVERED>);
 
@@ -135,6 +162,23 @@ post exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId a
 
  );
  
+    private test_editProfile: string ==> ()
+ test_editProfile(userEmail) ==
+ (
+	dcl auxRet : string;
+	dcl refUser : User;
+	
+	auxRet := exec.editProfile(userEmail, "newName", <Female>, 99);
+	
+	for user in exec.getUsers() do ( if user.getEmail() = userEmail then refUser := user; );
+	
+	assertEqual(refUser.getName(), "newName");
+	assertEqual(refUser.getGender(), <Female>);
+	assertEqual(refUser.getAge(), 99);
+
+ );
+ 
+ 
     private test_lists: () ==> ()
  test_lists() ==
  (
@@ -166,10 +210,11 @@ post exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId a
 	testGlovo.test_concludeOrder();
 	testGlovo.test_assignCourier("maria@glovo.com");
 	testGlovo.test_performOrder("maria@glovo.com");
+	testGlovo.test_cancelOrder();
 	testGlovo.test_addUser("newUser@mail.com");
 	testGlovo.test_addCourier("newCourier@glovo.com");
+	testGlovo.test_editProfile("blankuser");
 	testGlovo.test_lists();
-
 
  );
  
@@ -181,6 +226,11 @@ post exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId a
  testCreateOrders :
 (let email in set {"email1@hotmail.com","email2@hotmail.com"} in exec.createOrder(email)){1,5};
   
+-- setPersonInfo(courier), cancelOrder, earnedMoneyFromStore, increaseProductStock, removeProductFromOrder, setState(order), 
+-- todas de Person, 
+-- addStock e getStore de product, 
+-- addProduct e getEstimateTime de Store
+-- E a getAddress e os setters de User
  
 	
 end TestGlovo
