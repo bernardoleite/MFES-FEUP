@@ -135,7 +135,7 @@ for store in stores do (
 		 IO`print("Product: "); IO`println(product.getName()); 
 		 IO`print("Added Units: "); IO`println(unitsToAdd); 
 		 IO`print("Current Stock: "); IO`println(product.getStock()); 
-		 return "Result: Success."; 
+		 return "Result: Success"; 
 		 );
 );
 return "No store/product found."; 
@@ -427,7 +427,7 @@ for store in stores do
 	(
 	if store.getCategory() = categoryName then (IO`println("Store: " ^ store.getName() ^ ". Description: " ^ store.getDescription()));
 	);
-return "Result: sucess";
+return "Result: success";
 )
 pre categoryName in set categories and stores <> [];
 
@@ -479,7 +479,7 @@ for store in stores do
 	(
 	if store.getDeliveryCost() <= deliveryCost then (IO`println("Store: " ^ store.getName() ^ ". Description: " ^ store.getDescription()));
 	);
-return "Result: sucess";
+return "Result: success";
 )
 pre stores <> [];
 
