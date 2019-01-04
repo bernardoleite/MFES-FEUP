@@ -1,9 +1,9 @@
 class Order
+
 types
 public string = seq of char;
 public State = <INIT> | <ORDER_CONCLUDED> | <DELIVERED> ;
-values
--- TODO Define values here
+
 instance variables
 private orderID:  int;
 private totalCost : real;
@@ -84,8 +84,4 @@ public setState: State ==> State
 setState(newState) == (state:=newState; return state;)
 post state = newState and RESULT = state;
 
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
 end Order

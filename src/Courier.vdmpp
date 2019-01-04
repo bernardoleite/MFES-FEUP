@@ -1,9 +1,8 @@
 class Courier is subclass of Person
+
 types
 public string = seq of char;
-	
-values
--- TODO Define values here
+
 instance variables
 private cardID : string;
 private salary : int;
@@ -26,9 +25,4 @@ post RESULT = cardID;
 pure public getSalary: () ==> int
 getSalary() == return salary 
 post RESULT = salary;
-
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
 end Courier

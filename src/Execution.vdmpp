@@ -122,7 +122,8 @@ dcl newCourier : Courier := new Courier(idCard, salary);
 couriers := couriers ^ [newCourier];
 return "Result: Courier added to Couriers list.";
 )
-pre not exists courier in set elems couriers & courier.getCardID()= idCard;
+pre not exists courier in set elems couriers & courier.getCardID()= idCard
+post exists courier in set elems couriers & courier.getCardID()= idCard;
 
 public increaseProductStock: string * int * int ==> string
 increaseProductStock(storeName, productIndex, unitsToAdd) == ( 
@@ -163,6 +164,7 @@ pre (orderID in set dom refOrders
  )
 post exists order in set elems orders & (order.getId() = orderID and order.getState() = <DELIVERED>);
 
+
 public assignCourier: string * int ==> string
 assignCourier(courierID, orderID) == ( 
  dcl auxCourier : Courier ;
@@ -178,6 +180,7 @@ return "Result: success";
 pre exists1 order in set elems orders & (order.getId() = orderID and (order.courier = nil or order.getCourier().getCardID() <> courierID) and order.getState() = <ORDER_CONCLUDED>)
  and exists1 courier in set elems couriers & courier.getCardID() = courierID 
 post exists1 order in set elems orders & (order.getId() = orderID and order.getCourier().getCardID() = courierID);
+
  
 public createOrder: string ==> int
 createOrder(email) == ( 
@@ -197,6 +200,7 @@ for user in users do (
 )
 pre exists user in set elems users & user.getEmail() = email;
 
+
 public cancelOrder: int ==> string
 cancelOrder(orderId) == ( 
 
@@ -215,21 +219,8 @@ for order in orders do (
 orders := newOrders;
 refOrders := newRefOrders;
 return "Success: Order Canceled";
-);
-
-public deleteOrder: string * int ==> int
-deleteOrder(email, orderId) == ( 
-for user in users do ( 
-		if user.getEmail() = email then
-			( 
-			return 0;
-				--stuff here
-			) 
-		);
-	return -1;
 )
-pre exists user in set elems users & user.getEmail() = email
-	and exists order in set elems orders & order.getId() = orderId;
+pre exists order in set elems orders & order.getId() = orderId;
 
 
 public cloneProd: Product * nat * Store ==> Product
@@ -240,6 +231,7 @@ auxRet := newProd.setStore(storeRef);
 return newProd;
 )
 post refProd.getName() = RESULT.getName() and refProd.getPrice() = RESULT.getPrice() and refProd.getDescription() = RESULT.getDescription();
+
 
 public addProductToOrder: string * int * string * int * nat ==> string
 addProductToOrder(email, orderId, storeName, productIndex, numberUnits) == ( 
@@ -306,7 +298,10 @@ newProdsList := [];
 		);
 		
 return "Result: success";
-);
+)
+pre products(productIndex) in set elems products
+	and exists order in set elems orders & order.getId() = orderId;
+	
 
 public concludeOrder: string * int ==> string
 concludeOrder(email, orderId) == ( 
@@ -328,16 +323,8 @@ pre exists1 order in set elems orders & (order.getId() = orderId and order.getSt
 	and exists1 user in set elems users & user.getEmail() = email 
 post exists order in set elems orders & (order.getId() = orderId and order.getState() = <ORDER_CONCLUDED>);
 
-public populateDB: () ==> nat
-populateDB() == (
 
-return 1;
-);
-
-
-
-
--- 																										<LISTING OPERATIONS>
+																										/***** LISTING OPERATORS ******/
 -- "all" for all orders and "email" for user orders
 public listOrdersDelivered: string  ==> string
 listOrdersDelivered(request) == 
@@ -373,6 +360,7 @@ IO`println("\n");
 return "Result: success";
 )
 pre orders <> [];
+
 
 -- "all" for all orders and "email" for user orders
 public listOrders: string  ==> string
@@ -417,7 +405,9 @@ for order in orders do (if order.getCourier().getCardID() = cardId then
 
 IO`println("\n");
 return "Result: success";
-);
+)
+pre orders <> [];
+
 
 public listCategories: () ==> string
 listCategories() == 
@@ -440,6 +430,7 @@ for store in stores do
 return "Result: sucess";
 )
 pre categoryName in set categories and stores <> [];
+
 
 public listStoreProducts: string ==> string
 listStoreProducts(storeName) == 
@@ -471,6 +462,7 @@ return "Result: success";
 )
 pre couriers <> [];
 
+
 public listUsers: () ==> string
 listUsers() == 
 (
@@ -478,6 +470,7 @@ for user in users do (IO`println("User Email: " ^ user.getEmail()););
 return "Result: success";
 )
 pre users <> [];
+
 
 public listStoresWithDeliveryCost: real ==> string
 listStoresWithDeliveryCost(deliveryCost) == 
@@ -489,6 +482,7 @@ for store in stores do
 return "Result: sucess";
 )
 pre stores <> [];
+
 
 public earnedMoneyFromStore: (string) ==> real
 earnedMoneyFromStore(storeName) ==
@@ -513,7 +507,7 @@ for store in stores do(
 	return 0;
 )
 pre orders <> [];
--- 																										<GET OPERATIONS>
+																										/***** GET OPERATORS ******/
 
 public getUsers: () ==> seq of User
 getUsers() == return users 

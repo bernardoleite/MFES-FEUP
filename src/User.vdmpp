@@ -5,8 +5,7 @@ public Address :: address : string
 									street : string
 								  zip_code: string
 							 	  country : string;
-	--inv a == '-' in Address.zip-code;
-	
+							 	  	
 values
 instance variables
 private email : string;
@@ -33,8 +32,4 @@ setEmail(newEmail) == (email:=newEmail; return email;)
 pre newEmail <> email
 post email = newEmail;
 
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
 end User

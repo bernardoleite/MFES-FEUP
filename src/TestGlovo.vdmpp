@@ -7,7 +7,7 @@ types
 public string = seq of char;
 
 values
-address : User`Address = mk_User`Address("as","as","as","as");
+address : User`Address = mk_User`Address("as","as","as","Portugal");
 
 instance variables
 	exec : Execution := new Execution();
@@ -151,6 +151,8 @@ post exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId a
  auxRet := exec.listUsers();
  auxRet := exec.listCouriers();
  auxRet := exec.listStoresWithDeliveryCost(3);
+ auxRet := exec.listOrdersByCourier("newCourier@glovo.com");
+ 
 
  );
  

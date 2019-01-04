@@ -1,8 +1,7 @@
 class Store
 types
 public string = seq of char;
-values
--- TODO Define values here
+
 instance variables
 private name : string;
 private category : string;
@@ -11,7 +10,7 @@ private estimateTime : string;
 private deliveryCost : real;
 private products : seq of Product;
 
-inv '-' in set elems estimateTime;
+inv estimateTime(2) = '-' or estimateTime(3) = '-' ;
 
 operations
 public Store: string * string * string * string * real * seq of Product ==> Store
