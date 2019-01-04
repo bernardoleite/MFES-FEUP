@@ -55,8 +55,6 @@ operations
  
  currentNumOrders := len exec.getOrders();
  
- IO`println(currentNumOrders);
- 
  assertEqual(currentNumOrders,1);
  );
  
@@ -178,6 +176,22 @@ post exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId a
 
  );
  
+    private test_increaseProductStock: () ==> ()
+ test_increaseProductStock() ==
+ (
+	dcl auxRet : string;
+	dcl prodStock : int;
+	dcl refStores : seq of Store;
+	
+	refStores := exec.stores;
+	prodStock := refStores(1).getProducts()(1).getStock();
+
+	auxRet := exec.increaseProductStock(refStores(1).getName(), 1, 10);
+	
+	assertEqual(refStores(1).getProducts()(1).getStock(), prodStock+10);
+
+ );
+ 
  
     private test_lists: () ==> ()
  test_lists() ==
@@ -205,6 +219,7 @@ post exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId a
  (
  dcl testGlovo: TestGlovo :=  new TestGlovo();
  
+ 	testGlovo.test_increaseProductStock();
 	testGlovo.test_CreateOrder();
 	testGlovo.test_AddProductToOrder();
 	testGlovo.test_concludeOrder();
