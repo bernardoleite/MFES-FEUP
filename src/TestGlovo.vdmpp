@@ -5,6 +5,7 @@ class TestGlovo is subclass of MyTestCase
 */
 types
 public string = seq of char;
+public State = <INIT> | <ORDER_CONCLUDED> | <DELIVERED> ;
 
 values
 address : User`Address = mk_User`Address("as","as","as","Portugal");
@@ -22,6 +23,7 @@ operations
  (
  dcl currentRefOrders: map int to int;
  dcl orderIndex: nat;
+ dcl auxState: State;
 
  dcl currentNumOrders: int :=  len exec.getOrders();
  orderId := exec.createOrder("blankuser");
@@ -29,6 +31,7 @@ operations
  currentRefOrders :=  exec.getrefOrders();
  orderIndex := currentRefOrders(orderId);
  order :=  exec.getOrders()(orderIndex);
+  auxState := order.setState(<INIT>);
  	
  assertEqual(currentNumOrders+1,len exec.getOrders());
  )
@@ -182,8 +185,10 @@ post exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId a
 	dcl auxRet : string;
 	dcl prodStock : int;
 	dcl refStores : seq of Store;
+	dcl estimateTime : string;
 	
 	refStores := exec.stores;
+	estimateTime := exec.stores(1).getEstimateTime();
 	prodStock := refStores(1).getProducts()(1).getStock();
 
 	auxRet := exec.increaseProductStock(refStores(1).getName(), 1, 10);
@@ -229,6 +234,7 @@ post exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId a
 	testGlovo.test_addUser("newUser@mail.com");
 	testGlovo.test_addCourier("newCourier@glovo.com");
 	testGlovo.test_editProfile("blankuser");
+	--testGlovo.test_removeProductFromOrder();
 	testGlovo.test_lists();
 
  );
@@ -240,12 +246,5 @@ post exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId a
 
  testCreateOrders :
 (let email in set {"email1@hotmail.com","email2@hotmail.com"} in exec.createOrder(email)){1,5};
-  
--- setPersonInfo(courier), cancelOrder, earnedMoneyFromStore, increaseProductStock, removeProductFromOrder, setState(order), 
--- todas de Person, 
--- addStock e getStore de product, 
--- addProduct e getEstimateTime de Store
--- E a getAddress e os setters de User
- 
 	
 end TestGlovo
