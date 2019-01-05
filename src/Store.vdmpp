@@ -19,11 +19,11 @@ pre cost > 0
 post deliveryCost = cost;
 
 public addProduct: Product ==> nat
-addProduct(p) == (
+addProduct(p) == ( 
 products := products ^ [p];
 return len products;
 )
-pre p not in set elems products
+pre p not in set elems products 
 post p in set elems products;
 
 pure public getProduct: int ==> Product
@@ -31,7 +31,7 @@ getProduct(productIndex) == return products(productIndex)
 post RESULT = products(productIndex);
 
 pure public getProducts: () ==> seq of Product
-getProducts() == return products
+getProducts() == return products 
 post RESULT = products;
 
 pure public getName: () ==> string
@@ -54,6 +54,4 @@ pure public getDeliveryCost: () ==> real
 getDeliveryCost() == return deliveryCost 
 post RESULT = deliveryCost;
 
-functions
--- TODO Define Combinatorial Test Traces here
 end Store

@@ -19,17 +19,17 @@ Product(na, pri, des, qty) == (name := na; price := pri; description:=des; quant
 pre price > 0;
 
 public addStock: nat ==> ()
-addStock(numberUnits) == (
+addStock(numberUnits) == ( 
 quantity := quantity + numberUnits;
 )
 pre numberUnits >= 0;
 
 public removeStock: nat ==> nat
-removeStock(numberUnits) == (
+removeStock(numberUnits) == ( 
 quantity := quantity - numberUnits;
 return quantity;
 )
-pre numberUnits > 0
+pre numberUnits > 0 
 post RESULT = quantity;
 
 pure public getName: () ==> string
@@ -48,11 +48,13 @@ pure public getStock: () ==> nat
 getStock() == return quantity 
 post RESULT = quantity;
 
+pure public getStore: () ==> Store
+getStore() == return store
+post RESULT = store;
+
 public setStore: Store ==> int
 setStore(storeOfProduct) == (store := storeOfProduct; return 1;);
 
-pure public getStore: () ==> Store
-getStore() == (return store;);
 
 functions
 

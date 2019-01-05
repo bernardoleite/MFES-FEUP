@@ -123,12 +123,12 @@ dcl newCourier : Courier := new Courier(idCard, salary);
 couriers := couriers ^ [newCourier];
 return "Result: Courier added to Couriers list.";
 )
-pre not exists courier in set elems couriers & courier.getCardID()= idCard
+pre not exists courier in set elems couriers & courier.getCardID()= idCard 
 post exists courier in set elems couriers & courier.getCardID()= idCard;
 
 public increaseProductStock: string * int * int ==> string
 increaseProductStock(storeName, productIndex, unitsToAdd) == ( 
-for store in stores do (
+for store in stores do ( 
 	if store.getName()=storeName then ( 
 	   dcl product : Product;
 	   product := store.getProduct(productIndex); 
@@ -211,7 +211,7 @@ newOrders := [];
 newRefOrders := {0 |-> -1 };
 
 for order in orders do ( 
-		if(order.getId() <> orderId) then (
+		if(order.getId() <> orderId) then ( 
 		newOrders := newOrders^[order];
 		newRefOrders := newRefOrders ++ {order.getId() |-> len newOrders };
 		);
@@ -245,7 +245,7 @@ for store in stores do (
  	dcl newStock : nat := refProd.removeStock(numberUnits);
  	for order in orders do ( 
 		if order.getId() = orderId then
-			(
+			( 
 			if order.getUser().getEmail() = email then (auxRet := order.addProduct(newProd););
 			IO`println("Product(s) added. Current Order:"); 
 			for prod in order.getProducts() do (IO`print(prod.getName() ^ ". Quantity: "); IO`println(prod.getStock())); 
@@ -331,7 +331,7 @@ public listOrdersDelivered: string  ==> string
 listOrdersDelivered(request) == 
 ( 
 if request = "all" then for order in orders do
-(
+( 
  if order.getState() = <DELIVERED> then 
 (
 IO`print("Order ID: "); IO`println(order.getId());
@@ -344,7 +344,7 @@ if len order.getProducts() > 0 then
 );
 
 if request <> "all" then for order in orders do
-(
+( 
  if order.getState() = <DELIVERED> then 
 (
 if (order.getUser().getEmail() = request) then ( 
@@ -368,7 +368,7 @@ public listOrders: string  ==> string
 listOrders(request) == 
 ( 
 if request = "all" then for order in orders do
-(
+( 
 IO`print("Order ID: "); IO`println(order.getId());
 IO`print("State of Order: "); IO`println(order.getState());
 IO`print("Client: "); IO`println(order.getUser().getEmail());
@@ -378,7 +378,7 @@ if len order.getProducts() > 0 then
 );
 
 if request <> "all" then for order in orders do
-(
+( 
 if (order.getUser().getEmail() = request) then ( 
 IO`print("Order ID: "); IO`println(order.getId());
 IO`print("State of Order: "); IO`println(order.getState());
@@ -397,11 +397,13 @@ public listOrdersByCourier: string  ==> string
 listOrdersByCourier(cardId) == 
 ( 
 for order in orders do (if order.getCourier().getCardID() = cardId then
+	( 
 	(IO`print("Order: "); IO`println(order.getId()););
 	(IO`print("State: "); IO`println(order.getState()););
 	(IO`print("Client: "); IO`println(order.getUser()););
 	(IO`print("Total Cost: "); IO`println(order.getTotalCost()););
 	IO`println("\n");
+	)
 );
 
 IO`println("\n");
@@ -412,7 +414,7 @@ pre orders <> [];
 
 public listCategories: () ==> string
 listCategories() == 
-(
+( 
 for all category in set categories do ( 
 IO`println("Category: " ^ category);
 );
@@ -422,7 +424,7 @@ pre categories <> {};
 
 public listStores: string ==> string
 listStores(categoryName) == 
-(
+( 
 IO`println("Stores with Category: " ^ categoryName);
 for store in stores do  
 	(
@@ -435,7 +437,7 @@ pre categoryName in set categories and stores <> [];
 
 public listStoreProducts: string ==> string
 listStoreProducts(storeName) == 
-(
+( 
 dcl auxProducts : seq of Product ;
 dcl countProds : int := 1;
 
@@ -457,7 +459,7 @@ pre exists1 store in set elems stores & store.getName() = storeName and stores <
 
 public listCouriers: () ==> string
 listCouriers() == 
-(
+( 
 for courier in couriers do (IO`println("Courier ID: " ^ courier.getCardID()););
 return "Result: success";
 )
@@ -466,7 +468,7 @@ pre couriers <> [];
 
 public listUsers: () ==> string
 listUsers() == 
-(
+( 
 for user in users do (IO`println("User Email: " ^ user.getEmail()););
 return "Result: success";
 )
@@ -475,9 +477,9 @@ pre users <> [];
 
 public listStoresWithDeliveryCost: real ==> string
 listStoresWithDeliveryCost(deliveryCost) == 
-(
+( 
 for store in stores do  
-	(
+	( 
 	if store.getDeliveryCost() <= deliveryCost then (IO`println("Store: " ^ store.getName() ^ ". Description: " ^ store.getDescription()));
 	);
 return "Result: success";
@@ -487,16 +489,16 @@ pre stores <> [];
 
 public earnedMoneyFromStore: (string) ==> real
 earnedMoneyFromStore(storeName) ==
-(
-for store in stores do(
+( 
+for store in stores do( 
 	if store.getName() = storeName then(
 		for all order in set elems orders do
-		(
-			 if order.getState() = <DELIVERED> then(
+		( 
+			 if order.getState() = <DELIVERED> then( 
 			 dcl aux : map Product to Product := {x|-> y | x in set elems order.getProducts() , y in set elems store.getProducts() & x.getName() = y.getName()};
 			 dcl commonProducts : set of Product := dom aux;
 			 dcl earned : real := 0;			 
-			 for all product in set commonProducts do(
+			 for all product in set commonProducts do( 
 			 		earned := earned + product.getPrice() * product.getStock();
 			  );
 			  earned := earned -order.getCourier().getSalary();
@@ -512,7 +514,7 @@ pre orders <> [];
 public editProfile: string * string * Gender * nat ==> string
 editProfile(email, name, gender, age) == ( 
 
-for user in users do (
+for user in users do ( 
 	if user.getEmail() = email then user.setPersonInfo(name,gender,age) 
 );
 return "Result: success";

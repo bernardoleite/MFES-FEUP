@@ -16,15 +16,15 @@ pre ag >= 18
 post age = ag;
 
 pure public getName: () ==> string
-getName() == return name
+getName() == return name 
 post RESULT = name;
 
 pure public getGender: () ==> Gender
-getGender() == return gender
+getGender() == return gender 
 post RESULT = gender;
 
 pure public getAge: () ==> nat
-getAge() == return age
+getAge() == return age 
 post RESULT = age;
 
 end Person

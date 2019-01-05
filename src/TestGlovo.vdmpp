@@ -71,7 +71,32 @@ operations
  dcl auxRet : string := exec.addProductToOrder("blankuser", orderId, "store1", 1, 1);
  dcl newNumberProducts: int :=  len order.getProducts();
  assertEqual(newNumberProducts,numberProducts+1);
+ 
+ numberProducts :=  len order.getProducts();
+ 
+ auxRet := exec.addProductToOrder("blankuser", orderId, "store1", 1, 1);
+ newNumberProducts :=  len order.getProducts();
+ 
+ )
+ pre exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId and userOrder.getState() = <INIT>)
+	and exists user in set elems exec.users & user.getEmail() = "blankuser"
+	and exists store in set elems exec.stores & store.getName() = "store1"
+	and exec.products(1) in set elems exec.products;
+	
+	  private test_removeProductFromOrder: () ==> ()
+ test_removeProductFromOrder() ==
+ (
 
+
+ dcl numberProducts: int :=  len order.getProducts();
+	 
+ dcl auxRet : string := exec.removeProductFromOrder(orderId, 1);
+ dcl newNumberProducts: int :=  len order.getProducts();
+ IO`print("numberProducts: "); IO`print(numberProducts);
+
+ IO`print("newNumberProducts: "); IO`print(newNumberProducts);
+ assertEqual(auxRet,"Result: success");
+ 
  )
  pre exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId and userOrder.getState() = <INIT>)
 	and exists user in set elems exec.users & user.getEmail() = "blankuser"
@@ -145,6 +170,18 @@ post exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId a
 
  );
  
+     private test_setCourierInfo: string ==> ()
+ test_setCourierInfo(cardID) ==
+ (
+	dcl foundCourier : Courier;
+	for courier in exec.getCouriers() do ( if courier.getCardID() = cardID then foundCourier := courier);
+	
+  foundCourier.setPersonInfo("name", <Male>, 25);
+	
+	assertTrue(foundCourier.getGender() = <Male>);
+	
+
+ );
    private test_addCourier: string ==> ()
  test_addCourier(cardId) ==
  (
@@ -214,10 +251,27 @@ post exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId a
  auxRet := exec.listUsers();
  auxRet := exec.listCouriers();
  auxRet := exec.listStoresWithDeliveryCost(3);
- auxRet := exec.listOrdersByCourier("newCourier@glovo.com");
+ auxRet := exec.listOrdersByCourier("maria@glovo.com");
  
 
  );
+ 
+      private test_createAddProductToStore: () ==> ()
+ test_createAddProductToStore() ==
+ (
+  dcl prod1A : Product := new Product("Pipoca", 2.5, "Bem boa", 5);
+	dcl store1: Store := new Store("testStore", "candies", "Candies Store", "10-15min", 1.5, [prod1A] );
+	
+	
+  dcl prod1Test : Product := new Product("test", 1, "test 2", 6);
+	
+	dcl productsNum : nat := store1.addProduct(prod1Test);
+	assertTrue(store1.getName() = "testStore");
+	assertTrue(len store1.getProducts() = productsNum);
+	
+	
+ );
+ 
  
  public static main: () ==> ()
  main() ==
@@ -227,18 +281,19 @@ post exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId a
  	testGlovo.test_increaseProductStock();
 	testGlovo.test_CreateOrder();
 	testGlovo.test_AddProductToOrder();
+	testGlovo.test_removeProductFromOrder();
 	testGlovo.test_concludeOrder();
 	testGlovo.test_assignCourier("maria@glovo.com");
 	testGlovo.test_performOrder("maria@glovo.com");
 	testGlovo.test_cancelOrder();
 	testGlovo.test_addUser("newUser@mail.com");
 	testGlovo.test_addCourier("newCourier@glovo.com");
+	testGlovo.test_setCourierInfo("newCourier@glovo.com");
 	testGlovo.test_editProfile("blankuser");
-	--testGlovo.test_removeProductFromOrder();
+	testGlovo.test_createAddProductToStore();
 	testGlovo.test_lists();
 
- );
- 
+ ); 
  traces
  -- test cases will be generated in possible combinations
  testaddUsers :
