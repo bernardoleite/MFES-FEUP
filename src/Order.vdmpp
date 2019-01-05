@@ -24,7 +24,7 @@ return self
 );
 
 public addProduct: Product ==> int
-addProduct(newProd) == (
+addProduct(newProd) == ( 
 for prod in products do 
 ( 
 if prod.getName() = newProd.getName() then (prod.addStock(newProd.getStock()); return 1;) 
