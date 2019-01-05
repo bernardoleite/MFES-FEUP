@@ -59,7 +59,8 @@ operations
  currentNumOrders := len exec.getOrders();
  
  assertEqual(currentNumOrders,1);
- );
+ )
+ pre exists testOrder in set elems exec.orders & testOrder.getId() = orderId;
  
  
   private test_AddProductToOrder: () ==> ()
@@ -165,8 +166,7 @@ post exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId a
 	
 	for user in exec.getUsers() do ( if user.getEmail() = email then hasUser := true);
 	
-	assertTrue(hasUser = true);
-	
+	assertTrue(hasUser = true);	
 
  );
  
@@ -214,7 +214,8 @@ post exists1 userOrder in set elems exec.orders & (userOrder.getId() = orderId a
 	assertEqual(refUser.getGender(), <Female>);
 	assertEqual(refUser.getAge(), 99);
 
- );
+ )
+ pre exists user in set elems exec.users & user.getEmail() = userEmail;
  
     private test_increaseProductStock: () ==> ()
  test_increaseProductStock() ==

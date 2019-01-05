@@ -519,7 +519,9 @@ for user in users do (
 );
 return "Result: success";
 
-);
+)
+pre exists user in set elems users & user.getEmail()= email;
+
 
 																										/***** GET OPERATORS ******/
 
